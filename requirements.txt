@@ -1,0 +1,9 @@
+pandas
+numpy
+statsmodels
+scipy
+networkx
+sqlalchemy
+fastapi
+uvicorn
+pydantic
