@@ -22,6 +22,73 @@ class AnalysisEngine:
     def __init__(self):
         pass
 
+    def calculate_trend(self, series: pd.Series) -> Dict[str, Optional[float]]:
+        """
+        Calculates linear trend (slope and p-value) for a time series.
+        Expects series index to be datetime or integer.
+        If datetime, it converts to ordinal for regression.
+        """
+        if len(series) < 3:
+            return {"slope": None, "p_value": None}
+
+        y = series.dropna().values
+        if len(y) < 3:
+             return {"slope": None, "p_value": None}
+
+        if pd.api.types.is_datetime64_any_dtype(series.index):
+             x = series.index.map(pd.Timestamp.toordinal)
+        else:
+             x = np.arange(len(y))
+
+        try:
+            slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+            return {"slope": float(slope), "p_value": float(p_value)}
+        except Exception as e:
+            logger.warning(f"Trend calculation failed: {e}")
+            return {"slope": None, "p_value": None}
+
+    def bootstrap_ci(self, group1: pd.Series, group2: pd.Series, n_bootstraps: int = 1000, confidence_level: float = 0.95) -> Dict[str, float]:
+        """
+        Calculates confidence interval for the difference in means (group2 - group1) using bootstrap resampling.
+        """
+        data1 = group1.dropna().values
+        data2 = group2.dropna().values
+
+        if len(data1) < 3 or len(data2) < 3:
+             return {"lower": np.nan, "upper": np.nan}
+
+        # Simple manual bootstrap for difference in means
+        diffs = []
+        rng = np.random.default_rng()
+
+        try:
+            for _ in range(n_bootstraps):
+                s1 = rng.choice(data1, size=len(data1), replace=True)
+                s2 = rng.choice(data2, size=len(data2), replace=True)
+                diffs.append(np.mean(s2) - np.mean(s1))
+
+            alpha = (1 - confidence_level) / 2
+            lower = np.percentile(diffs, alpha * 100)
+            upper = np.percentile(diffs, (1 - alpha) * 100)
+
+            return {"lower": float(lower), "upper": float(upper)}
+        except Exception as e:
+             logger.warning(f"Bootstrap failed: {e}")
+             return {"lower": np.nan, "upper": np.nan}
+
+    def correlation_matrix(self, metrics_df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Calculates correlation matrix for multiple metrics.
+        Expects metrics_df to have columns 'date', 'metric_name', 'value'.
+        Returns a DataFrame where index and columns are metric names.
+        """
+        try:
+            pivot_df = metrics_df.pivot_table(index='date', columns='metric_name', values='value')
+            return pivot_df.corr(method='pearson')
+        except Exception as e:
+            logger.error(f"Correlation matrix failed: {e}")
+            return pd.DataFrame()
+
     def calculate_baseline_vs_intervention(
         self,
         metrics: pd.DataFrame,
@@ -122,6 +189,13 @@ class AnalysisEngine:
              warnings.append("Zero variance in both baseline and intervention data.")
              logger.warning("Zero variance detected.")
 
+        # Calculate Trends
+        baseline_trend = self.calculate_trend(baseline_df.set_index('date')['value'])
+        intervention_trend = self.calculate_trend(intervention_df.set_index('date')['value'])
+
+        # Calculate Bootstrap CI
+        bootstrap_res = self.bootstrap_ci(baseline_data, intervention_data)
+
         # Cohen's d
         # Pooled standard deviation
         n1 = len(baseline_data)
@@ -172,18 +246,21 @@ class AnalysisEngine:
                 "end": (start_date - timedelta(days=1)).strftime("%Y-%m-%d"),
                 "count": int(n1),
                 "mean": float(mean_baseline),
-                "std": float(std_baseline) if not np.isnan(std_baseline) else 0.0
+                "std": float(std_baseline) if not np.isnan(std_baseline) else 0.0,
+                "trend": baseline_trend
             },
             "intervention_window": {
                 "start": start_date.strftime("%Y-%m-%d"),
                 "end": (intervention_end - timedelta(days=1)).strftime("%Y-%m-%d"),
                 "count": int(n2),
                 "mean": float(mean_intervention),
-                "std": float(std_intervention) if not np.isnan(std_intervention) else 0.0
+                "std": float(std_intervention) if not np.isnan(std_intervention) else 0.0,
+                "trend": intervention_trend
             },
             "analysis": {
                 "mean_difference": float(mean_diff),
                 "cohens_d": float(cohens_d),
+                "bootstrap_ci": bootstrap_res,
                 "t_test": {
                     "statistic": float(t_stat) if t_stat is not None and not np.isnan(t_stat) else None,
                     "p_value": float(p_value_t) if p_value_t is not None and not np.isnan(p_value_t) else None
