@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from pee.core.database import get_db
 from pee.core.models import Intervention, MetricEntry
 from pee.core.analysis import AnalysisEngine
+from pee.core.reporting import ReportGenerator
 from pee.gui.utils import show_error, show_info
 
 logger = logging.getLogger(__name__)
@@ -20,6 +21,7 @@ class AnalysisWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout(self)
+        self.report_generator = ReportGenerator()
 
         # Controls
         self.control_group = QGroupBox("Analysis Settings")
@@ -60,6 +62,11 @@ class AnalysisWidget(QWidget):
         self.save_button.clicked.connect(self.save_report)
         self.save_button.setEnabled(False)
         self.results_layout.addWidget(self.save_button)
+
+        self.export_html_button = QPushButton("Export HTML Report")
+        self.export_html_button.clicked.connect(self.export_html_report)
+        self.export_html_button.setEnabled(False)
+        self.results_layout.addWidget(self.export_html_button)
 
         self.results_group.setLayout(self.results_layout)
         self.layout.addWidget(self.results_group)
@@ -140,6 +147,7 @@ class AnalysisWidget(QWidget):
             self.current_results["intervention"] = intervention.name
             self.current_results["metric"] = metric_name
             self.save_button.setEnabled(True)
+            self.export_html_button.setEnabled(True)
 
         except Exception as e:
             show_error(self, "Analysis Failed", str(e))
@@ -165,14 +173,29 @@ class AnalysisWidget(QWidget):
         iw = results.get("intervention_window", {})
 
         text += "<h4>Windows</h4>"
+        # Trends
+        b_trend = bw.get('trend', {})
+        i_trend = iw.get('trend', {})
+        b_trend_str = f"Trend: {b_trend.get('slope', 0):.4f} (p={b_trend.get('p_value', 1):.4f})" if b_trend and b_trend.get('slope') is not None else "Trend: N/A"
+        i_trend_str = f"Trend: {i_trend.get('slope', 0):.4f} (p={i_trend.get('p_value', 1):.4f})" if i_trend and i_trend.get('slope') is not None else "Trend: N/A"
+
         text += f"<b>Baseline:</b> {bw.get('start')} to {bw.get('end')} (N={bw.get('count')}, Mean={bw.get('mean'):.2f}, Std={bw.get('std'):.2f})<br>"
+        text += f"&nbsp;&nbsp;&nbsp;{b_trend_str}<br>"
         text += f"<b>Intervention:</b> {iw.get('start')} to {iw.get('end')} (N={iw.get('count')}, Mean={iw.get('mean'):.2f}, Std={iw.get('std'):.2f})<br>"
+        text += f"&nbsp;&nbsp;&nbsp;{i_trend_str}<br>"
 
         # Stats
         an = results.get("analysis", {})
         text += "<h4>Statistics</h4>"
         text += f"<b>Mean Difference:</b> {an.get('mean_difference'):.2f}<br>"
         text += f"<b>Cohen's d:</b> {an.get('cohens_d'):.2f}<br>"
+
+        # Bootstrap CI
+        ci = an.get("bootstrap_ci", {})
+        if ci and ci.get('lower') is not None:
+            text += f"<b>Bootstrap 95% CI:</b> [{ci.get('lower', 0):.2f}, {ci.get('upper', 0):.2f}]<br>"
+        else:
+            text += f"<b>Bootstrap 95% CI:</b> N/A<br>"
 
         tt = an.get("t_test", {})
         u = an.get("mann_whitney_u", {})
@@ -207,3 +230,21 @@ class AnalysisWidget(QWidget):
                 show_info(self, f"Report saved to {filename}")
             except Exception as e:
                 show_error(self, "Failed to save report", str(e))
+
+    def export_html_report(self) -> None:
+        """Exports the current report to an HTML file."""
+        if not self.current_results:
+            return
+
+        filename, _ = QFileDialog.getSaveFileName(self, "Export HTML Report", "report.html", "HTML Files (*.html)")
+        if filename:
+            success = self.report_generator.generate_html_report(
+                self.current_results,
+                filename,
+                self.current_results.get("intervention", "Unknown"),
+                self.current_results.get("metric", "Unknown")
+            )
+            if success:
+                show_info(self, f"Report exported to {filename}")
+            else:
+                show_error(self, "Failed to export report", "Check logs for details.")

@@ -7,6 +7,7 @@ from pee.gui.interventions import InterventionsWidget
 from pee.gui.metrics import MetricsWidget
 from pee.gui.events import EventsWidget
 from pee.gui.analysis import AnalysisWidget
+from pee.gui.data_management import DataManagementWidget
 from pee.core.database import Base, engine
 
 logger = logging.getLogger(__name__)
@@ -32,11 +33,13 @@ class MainWindow(QMainWindow):
         self.metrics_tab = MetricsWidget()
         self.events_tab = EventsWidget()
         self.analysis_tab = AnalysisWidget()
+        self.data_tab = DataManagementWidget()
 
         self.tabs.addTab(self.interventions_tab, "Interventions")
         self.tabs.addTab(self.metrics_tab, "Metrics")
         self.tabs.addTab(self.events_tab, "Events")
         self.tabs.addTab(self.analysis_tab, "Analysis")
+        self.tabs.addTab(self.data_tab, "Data Management")
 
         # Connect tab change to refresh data if needed
         self.tabs.currentChanged.connect(self.on_tab_change)

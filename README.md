@@ -104,10 +104,19 @@ python run_gui.py
 4.  **Analysis:**
     - Select an intervention and a metric to analyze.
     - Define baseline and intervention windows (days).
-    - View statistical results (Mean Difference, Cohen's d, p-values).
+    - View statistical results:
+        - Mean Difference, Cohen's d.
+        - **NEW:** Linear Trend (slope, p-value) for each period.
+        - **NEW:** Bootstrap 95% Confidence Interval for the difference.
+        - T-test and Mann-Whitney U test p-values.
     - **Scientific Rigor:** Warnings are displayed for small sample sizes, zero variance, etc.
-    - Export reports to JSON.
+    - Export reports to JSON or **NEW: HTML**.
     - ![Analysis Screenshot Placeholder](https://via.placeholder.com/800x400?text=Analysis+Tab)
+
+5.  **Data Management (NEW):**
+    - Import Metrics, Interventions, and Events from CSV files.
+    - Export your data to CSV for backup or external analysis.
+    - Located in the "Data Management" tab.
 
 ## 6. Minimal Programmatic Usage Example
 
