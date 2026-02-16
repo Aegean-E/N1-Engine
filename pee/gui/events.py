@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QDate, QTime
 from sqlalchemy.orm import Session
 
-from pee.core.database import get_db
+from pee.core.database import SessionLocal
 from pee.core.models import EventEntry
 from pee.gui.utils import show_error, show_info
 
@@ -63,7 +63,7 @@ class EventsWidget(QWidget):
         severity = self.severity_input.value()
         notes = self.notes_input.toPlainText()
 
-        db: Session = next(get_db())
+        db = SessionLocal()
         try:
             event = EventEntry(
                 timestamp=timestamp,
@@ -73,15 +73,16 @@ class EventsWidget(QWidget):
             )
             db.add(event)
             db.commit()
-            show_info(self, "Event logged successfully.")
-
-            # Clear inputs
-            self.event_name_input.clear()
-            self.notes_input.clear()
-            self.severity_input.setValue(1)
-
         except Exception as e:
             db.rollback()
             show_error(self, "Failed to log event", str(e))
+            return
         finally:
             db.close()
+
+        show_info(self, "Event logged successfully.")
+
+        # Clear inputs
+        self.event_name_input.clear()
+        self.notes_input.clear()
+        self.severity_input.setValue(1)

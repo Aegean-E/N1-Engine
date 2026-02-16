@@ -2,58 +2,32 @@
 
 ## 1. Project Overview
 
-The **Personal Experiment Engine (PEE)** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis.
+The **Personal Experiment Engine (PEE)** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis. It empowers individuals to treat their life as a laboratory, applying scientific statistical methods to personal data to determine what truly works for them.
 
 **What PEE is:**
-- A structured tool for logging interventions and tracking metrics.
-- An analysis engine for comparing baseline periods against intervention periods.
-- A framework built on standard scientific Python libraries (Pandas, SciPy, NumPy).
-- **NEW:** A cross-platform desktop GUI for easy interaction.
+- A structured tool for logging life interventions (e.g., "Started Magnesium", "Quit Caffeine") and tracking daily metrics (e.g., "Sleep Quality", "Energy Level").
+- A statistical analysis engine that compares baseline periods against intervention periods to detect significant changes.
+- A cross-platform desktop application built with Python and PyQt6.
+- A privacy-focused tool: All data is stored locally on your machine in a SQLite database.
 
 **What PEE is NOT:**
-- **Not medical advice:** PEE is a software tool, not a doctor. Consult a professional for health decisions.
-- **Not a causal proof engine:** PEE provides statistical insights, but correlation does not imply causation, especially in single-subject designs.
+- **Not medical advice:** PEE is a software tool for data analysis. It does not replace professional medical advice. Consult a doctor for health decisions.
+- **Not a causal proof engine:** PEE identifies correlations and statistically significant shifts. However, in single-subject experiments, unmeasured confounding variables (like stress, weather, or placebo effects) can influence results.
 
-**Scientific Positioning:**
-PEE facilitates "N=1 structured inference," allowing individuals to apply scientific rigor to their personal data, moving beyond intuition to data-driven insights.
+## 2. Scientific Philosophy
 
-## 2. Design Philosophy
+PEE is built on the principles of "N=1 structured inference":
+*   **Epistemic Humility:** We acknowledge the limitations of self-experimentation. Results are indicators, not absolute truths.
+*   **Conservative Interpretation:** PEE favors caution. It flags small sample sizes, multiple comparisons, and insufficient data to prevent overconfidence.
+*   **Reproducibility:** Analysis is deterministic and repeatable.
+*   **Separation of Concerns:** Data entry is distinct from analysis to minimize observer bias.
 
-*   **Epistemic Humility:** We acknowledge the limitations of single-subject experiments. Results are indicators, not absolute truths.
-*   **Conservative Interpretation:** PEE favors caution. We flag small sample sizes, potential confounds, and multiple comparisons to prevent overconfidence.
-*   **Reproducibility:** Analysis should be repeatable. By using code and versioned data, PEE ensures that results can be verified.
-*   **Separation of Concerns:** Logging (data entry) is distinct from Inference (analysis), ensuring that the act of recording data does not bias the interpretation.
-
-## 3. Architecture
-
-The codebase is organized as follows:
-
-```
-/pee
-  /core
-    analysis.py       # Statistical logic and hypothesis testing
-    database.py       # Database connection and session management
-    models.py         # SQLAlchemy data models (Intervention, MetricEntry, EventEntry)
-  /gui                # Desktop GUI (PyQt6)
-    main_window.py
-    interventions.py
-    metrics.py
-    events.py
-    analysis.py
-    utils.py
-  /api                # API endpoints (Phase 4)
-  /utils              # Utility functions
-tests/                # Unit and integration tests
-config.py             # Configuration and constants
-run_gui.py            # Entry point for GUI
-```
-
-## 4. Installation Instructions
+## 3. Installation Instructions
 
 **Prerequisites:**
-- Python 3.11+
+- Python 3.11 or higher.
 
-**Setup:**
+**Step-by-Step Setup:**
 
 1.  **Clone the repository:**
     ```bash
@@ -61,128 +35,133 @@ run_gui.py            # Entry point for GUI
     cd pee
     ```
 
-2.  **Create a virtual environment:**
-    ```bash
-    python3 -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
-    ```
+2.  **Create a virtual environment (Recommended):**
+    *   **Linux/macOS:**
+        ```bash
+        python3 -m venv venv
+        source venv/bin/activate
+        ```
+    *   **Windows:**
+        ```cmd
+        python -m venv venv
+        venv\Scripts\activate
+        ```
 
 3.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
-    pip install PyQt6 matplotlib  # Required for GUI
     ```
+    *Note: This installs essential libraries like `pandas`, `numpy`, `scipy`, `statsmodels`, `sqlalchemy`, `PyQt6`, and `matplotlib`.*
 
 4.  **Database:**
-    PEE uses SQLite (`pee.db`). The database file will be created automatically in the root directory upon first run.
+    PEE uses a local SQLite database (`pee.db`). This file is automatically created in the root directory when you first run the application.
 
-## 5. GUI Usage
+## 4. Running the Application
 
-To launch the graphical user interface:
+To launch the Graphical User Interface (GUI):
 
 ```bash
 python run_gui.py
 ```
 
-### Features
+## 5. Usage Guide
 
-1.  **Interventions:**
-    - View, add, and manage interventions.
-    - Fields: Name, Start Date, Dosage, Notes.
-    - ![Interventions Screenshot Placeholder](https://via.placeholder.com/800x400?text=Interventions+Tab)
+### A. Interventions Tab
+This is where you manage your experiments.
+-   **Add Intervention:** Click "Add Intervention". Enter a name (e.g., "Blue Light Blockers"), a Start Date, and optional Dosage/Notes.
+-   **Edit Intervention:** Double-click a row or select it and click "Edit Selected".
+-   **Close Intervention:** If you stop an intervention, select it and click "Close (End Now)". This sets the End Date to today.
+-   **Active vs. Closed:** "Active" interventions have no end date and are ongoing.
 
-2.  **Metrics:**
-    - Log daily metrics (e.g., Sleep Quality, Mood, Blood Pressure).
-    - Visualize time-series data with interactive plots.
-    - ![Metrics Screenshot Placeholder](https://via.placeholder.com/800x400?text=Metrics+Tab)
+### B. Metrics Tab
+Log your daily quantitative data here.
+-   **Log Metric:** Select a date, enter a metric name (or choose from existing ones), and a numeric value.
+    -   *Example:* Metric Name: "Sleep Quality", Value: 8.5.
+-   **Visualize:** Select a metric from the dropdown to see a time-series plot of your data.
 
-3.  **Events:**
-    - Log significant events (e.g., Illness, Stress, Diet Cheat).
-    - Severity rating (1-5) and notes.
-    - ![Events Screenshot Placeholder](https://via.placeholder.com/800x400?text=Events+Tab)
+### C. Events Tab
+Log qualitative or significant one-off events that might impact your metrics (confounding variables).
+-   **Log Event:** Enter Date, Time, Event Name (e.g., "Sick", "Travel", "High Stress"), Severity (1-5), and Notes.
+-   *Use Case:* If your sleep quality drops, check the Events tab to see if you were traveling or sick during that period.
 
-4.  **Analysis:**
-    - Select an intervention and a metric to analyze.
-    - Define baseline and intervention windows (days).
-    - View statistical results:
-        - Mean Difference, Cohen's d.
-        - **NEW:** Linear Trend (slope, p-value) for each period.
-        - **NEW:** Bootstrap 95% Confidence Interval for the difference.
-        - T-test and Mann-Whitney U test p-values.
-    - **Scientific Rigor:** Warnings are displayed for small sample sizes, zero variance, etc.
-    - Export reports to JSON or **NEW: HTML**.
-    - ![Analysis Screenshot Placeholder](https://via.placeholder.com/800x400?text=Analysis+Tab)
+### D. Analysis Tab
+This is the core of PEE. It statistically compares your data before and during an intervention.
+1.  **Select Intervention:** Choose the experiment you want to analyze.
+2.  **Select Metric:** Choose the outcome metric you want to test (e.g., "Sleep Quality").
+3.  **Set Windows:**
+    -   **Baseline Days:** How many days *before* the intervention started should be used as the control group? (Recommended: 14+ days).
+    -   **Intervention Days:** How many days *after* the intervention started should be analyzed?
+4.  **Run Analysis:** Click the button to generate the report.
 
-5.  **Data Management (NEW):**
-    - Import Metrics, Interventions, and Events from CSV files.
-    - Export your data to CSV for backup or external analysis.
-    - Located in the "Data Management" tab.
+**Understanding the Report:**
+-   **Windows:** Shows the exact dates, count (N), mean, and standard deviation for both periods.
+-   **Trends:** Displays the linear trend (slope) and its p-value. A significant trend *before* the intervention suggests your baseline wasn't stable.
+-   **Mean Difference:** The raw change in the average (Intervention Mean - Baseline Mean).
+-   **Cohen's d:** Effect size.
+    -   0.2 = Small
+    -   0.5 = Medium
+    -   0.8 = Large
+-   **Bootstrap 95% CI:** The Confidence Interval for the mean difference. If it doesn't cross zero (e.g., [0.5, 2.3]), the change is statistically significant at the 95% level.
+-   **p-values:**
+    -   **Welch's t-test:** Parametric test for difference in means (assumes unequal variance). p < 0.05 is significant.
+    -   **Mann-Whitney U:** Non-parametric test (doesn't assume normal distribution). Useful for small samples or ordinal data (1-10 scales).
 
-## 6. Minimal Programmatic Usage Example
+### E. Data Management Tab
+Import and export your data for backup or external analysis.
+-   **Import CSV:**
+    -   **Metrics CSV Format:** `date` (YYYY-MM-DD), `metric_name`, `value`.
+    -   **Interventions CSV Format:** `name`, `start_date` (YYYY-MM-DD), `end_date` (optional), `dosage`, `notes`.
+    -   **Events CSV Format:** `timestamp` (YYYY-MM-DD HH:MM:SS), `event_name`, `severity`, `notes`.
+-   **Export CSV:** Saves your database content to CSV files.
 
-This example demonstrates creating an intervention, logging metrics, and running a basic analysis via code.
+## 6. Statistical Methods & Rigor
 
-```python
-import pandas as pd
-from datetime import date
-from pee.core.database import SessionLocal, engine, Base
-from pee.core.models import Intervention, MetricEntry
-from pee.core.analysis import AnalysisEngine
+PEE employs several statistical checks to ensure robust results:
+1.  **Linear Regression (Trends):** Checks if the metric was already changing before the intervention (non-stationary baseline).
+2.  **Bootstrap Resampling:** Calculates confidence intervals by simulating 1000 "parallel universes" from your data. This is often more robust than formula-based CIs for small, skewed datasets.
+3.  **Scientific Warnings:**
+    -   **Small Sample Size:** Flags analysis if N < 7 days.
+    -   **Multiple Comparisons:** Warns if you test too many metrics at once (increasing the risk of false positives).
+    -   **Zero Variance:** Flags if the data is constant (e.g., you logged "8" for 14 days straight).
 
-# Initialize DB
-Base.metadata.create_all(bind=engine)
-db = SessionLocal()
+## 7. Troubleshooting
 
-# 1. Create Intervention
-intervention = Intervention(
-    name="Blue Light Blocking Glasses",
-    start_date=date(2023, 11, 1),
-    notes="Wearing 2 hours before bed"
-)
-db.add(intervention)
-db.commit()
+*   **"Analysis Failed":** Ensure you have at least 3 days of data for both the baseline and intervention periods.
+*   **"Database Locked":** This can happen if multiple instances of PEE are open. Close other instances.
+*   **"Import Failed":** Check your CSV formatting. Dates must be YYYY-MM-DD.
 
-# 2. Log Metrics (Mock Data)
-# In practice, you would load this from a CSV or API
-data = []
-# Baseline (Oct 15 - Oct 31)
-for d in pd.date_range("2023-10-15", "2023-10-31"):
-    db.add(MetricEntry(date=d.date(), metric_name="Sleep Quality", value=7.0))
-# Intervention (Nov 1 - Nov 14)
-for d in pd.date_range("2023-11-01", "2023-11-14"):
-    db.add(MetricEntry(date=d.date(), metric_name="Sleep Quality", value=8.0))
-db.commit()
+## 8. Developer Guide
 
-# 3. Run Analysis
-engine = AnalysisEngine()
-metrics_df = pd.read_sql(
-    db.query(MetricEntry.date, MetricEntry.value, MetricEntry.metric_name)
-    .filter(MetricEntry.metric_name == "Sleep Quality").statement,
-    db.bind
-)
-
-result = engine.calculate_baseline_vs_intervention(
-    metrics=metrics_df,
-    start_date=pd.Timestamp("2023-11-01"),
-    baseline_days=14,
-    intervention_days=14
-)
-
-# 4. Interpret Output
-print(result['analysis'])
-# check 'warnings' key for any flags
+**Directory Structure:**
+```
+/pee
+  /core            # Business logic and database
+    analysis.py    # Statistical engine
+    data_manager.py# Import/Export logic
+    models.py      # SQLAlchemy models
+  /gui             # PyQt6 Application
+    analysis.py    # Analysis widget
+    ...
+tests/             # Unit tests
+run_gui.py         # Entry point
 ```
 
-## 7. Statistical Disclaimer
+**Running Tests:**
+To verify the integrity of the application:
+```bash
+# Install pytest if not already installed
+pip install pytest
 
-*   **Multiple Comparison Risk:** Testing many metrics simultaneously increases the chance of finding a "significant" result by random chance. PEE warns if you analyze >3 metrics at once.
-*   **Small Sample Size:** PEE flags analyses with fewer than 7 days of data. Results from short periods are highly volatile and should be treated with extreme skepticism.
-*   **Correlation ≠ Causation:** An observed change after an intervention does not prove the intervention caused the change. External factors (seasonality, lifestyle changes, placebo effect) may be responsible.
-*   **Single-Subject Limitations:** Results apply *only* to you (N=1) and cannot be generalized to others.
+# Run all tests
+python -m pytest tests/
+```
 
-## 8. Development Roadmap
+**Contributing:**
+1.  Fork the repository.
+2.  Create a feature branch.
+3.  Write tests for your changes.
+4.  Submit a Pull Request.
 
-*   **Phase 1 (Complete):** Core architecture, database models, basic statistical engine (t-test, Mann-Whitney U), standard deviation pooling.
-*   **Phase 2:** Lag detection (time-series analysis), automated reporting, improved data ingestion.
-*   **Phase 3:** Causal graphs, Bayesian updating, counterfactual reasoning support.
-*   **Phase 4:** API layer, web interface, mobile companion app.
+## 9. License
+
+[License Name/Type] - See LICENSE file for details.
