@@ -7,3 +7,5 @@ sqlalchemy
 fastapi
 uvicorn
 pydantic
+PyQt6
+matplotlib
