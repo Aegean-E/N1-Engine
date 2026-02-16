@@ -1,8 +1,19 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Union
 from datetime import timedelta
+import logging
+
+from pee.config import (
+    MIN_BASELINE_DAYS,
+    MIN_INTERVENTION_DAYS,
+    MIN_DATA_POINTS,
+    MAX_SAFE_METRICS
+)
+
+# Setup logging
+logger = logging.getLogger(__name__)
 
 class AnalysisEngine:
     """
@@ -30,10 +41,20 @@ class AnalysisEngine:
         Returns:
             Dictionary containing analysis results.
         """
+        logger.info(f"Starting analysis for intervention starting {start_date}")
+
         # Ensure date column is datetime
         if not pd.api.types.is_datetime64_any_dtype(metrics['date']):
             metrics = metrics.copy()
             metrics['date'] = pd.to_datetime(metrics['date'])
+
+        # Input Validation: Check for mixed metrics
+        if 'metric_name' in metrics.columns:
+            unique_metrics = metrics['metric_name'].unique()
+            if len(unique_metrics) > 1:
+                error_msg = f"AnalysisEngine expects a single metric. Found {len(unique_metrics)}: {unique_metrics}"
+                logger.error(error_msg)
+                raise ValueError(error_msg)
 
         # Define windows
         baseline_start = start_date - timedelta(days=baseline_days)
@@ -54,25 +75,36 @@ class AnalysisEngine:
         intervention_data = intervention_df['value']
 
         # Check for insufficient data points
-        if len(baseline_data) < 3 or len(intervention_data) < 3:
+        if len(baseline_data) < MIN_DATA_POINTS or len(intervention_data) < MIN_DATA_POINTS:
+            logger.warning("Insufficient data points for analysis.")
             return {
-                "error": "Insufficient data points (minimum 3 required)",
+                "error": f"Insufficient data points (minimum {MIN_DATA_POINTS} required)",
                 "baseline_count": len(baseline_data),
                 "intervention_count": len(intervention_data)
             }
 
-        # Check for insufficient sample size (duration < 7 days)
+        # Warnings
         warnings = []
 
+        # Check for insufficient sample size
         if not baseline_df.empty:
             baseline_span = (baseline_df['date'].max() - baseline_df['date'].min()).days + 1
-            if baseline_span < 7:
-                warnings.append(f"Insufficient baseline duration: {baseline_span} days (recommended >= 7)")
+            if baseline_span < MIN_BASELINE_DAYS:
+                msg = f"Insufficient baseline duration: {baseline_span} days (recommended >= {MIN_BASELINE_DAYS})"
+                warnings.append(msg)
+                logger.warning(msg)
 
         if not intervention_df.empty:
             intervention_span = (intervention_df['date'].max() - intervention_df['date'].min()).days + 1
-            if intervention_span < 7:
-                warnings.append(f"Insufficient intervention duration: {intervention_span} days (recommended >= 7)")
+            if intervention_span < MIN_INTERVENTION_DAYS:
+                msg = f"Insufficient intervention duration: {intervention_span} days (recommended >= {MIN_INTERVENTION_DAYS})"
+                warnings.append(msg)
+                logger.warning(msg)
+
+        if intervention_days < baseline_days:
+            msg = f"Intervention duration ({intervention_days} days) is shorter than baseline ({baseline_days} days). Power may be reduced."
+            warnings.append(msg)
+            logger.warning(msg)
 
         # Calculate means and std
         mean_baseline = baseline_data.mean()
@@ -81,6 +113,14 @@ class AnalysisEngine:
         std_intervention = intervention_data.std(ddof=1)
 
         mean_diff = mean_intervention - mean_baseline
+
+        # Zero variance check
+        baseline_variance = 0 if np.isnan(std_baseline) else std_baseline
+        intervention_variance = 0 if np.isnan(std_intervention) else std_intervention
+
+        if baseline_variance == 0 and intervention_variance == 0:
+             warnings.append("Zero variance in both baseline and intervention data.")
+             logger.warning("Zero variance detected.")
 
         # Cohen's d
         # Pooled standard deviation
@@ -97,16 +137,34 @@ class AnalysisEngine:
         cohens_d = mean_diff / pooled_std if pooled_std != 0 else 0.0
 
         # Statistical Tests
-        # Two-sided t-test
-        # Welch's t-test is generally safer (equal_var=False)
-        t_stat, p_value_t = stats.ttest_ind(
-            intervention_data, baseline_data, equal_var=False
-        )
+        t_stat, p_value_t = None, None
+        u_stat, p_value_u = None, None
 
-        # Mann-Whitney U test
-        u_stat, p_value_u = stats.mannwhitneyu(
-            intervention_data, baseline_data, alternative='two-sided'
-        )
+        try:
+            # Welch's t-test
+            if baseline_variance == 0 and intervention_variance == 0:
+                if mean_diff == 0:
+                    t_stat, p_value_t = 0.0, 1.0
+                else:
+                    t_stat, p_value_t = np.nan, np.nan # Undefined
+            else:
+                 t_stat, p_value_t = stats.ttest_ind(
+                    intervention_data, baseline_data, equal_var=False
+                )
+        except Exception as e:
+            logger.error(f"T-test failed: {e}")
+            warnings.append(f"T-test failed: {str(e)}")
+            t_stat, p_value_t = np.nan, np.nan
+
+        try:
+            # Mann-Whitney U test
+             u_stat, p_value_u = stats.mannwhitneyu(
+                intervention_data, baseline_data, alternative='two-sided'
+            )
+        except Exception as e:
+            logger.error(f"Mann-Whitney U test failed: {e}")
+            warnings.append(f"Mann-Whitney U test failed: {str(e)}")
+            u_stat, p_value_u = np.nan, np.nan
 
         return {
             "baseline_window": {
@@ -127,13 +185,51 @@ class AnalysisEngine:
                 "mean_difference": float(mean_diff),
                 "cohens_d": float(cohens_d),
                 "t_test": {
-                    "statistic": float(t_stat),
-                    "p_value": float(p_value_t)
+                    "statistic": float(t_stat) if t_stat is not None and not np.isnan(t_stat) else None,
+                    "p_value": float(p_value_t) if p_value_t is not None and not np.isnan(p_value_t) else None
                 },
                 "mann_whitney_u": {
-                    "statistic": float(u_stat),
-                    "p_value": float(p_value_u)
+                    "statistic": float(u_stat) if u_stat is not None and not np.isnan(u_stat) else None,
+                    "p_value": float(p_value_u) if p_value_u is not None and not np.isnan(p_value_u) else None
                 }
             },
             "warnings": warnings
+        }
+
+    def analyze_multiple_metrics(
+        self,
+        metrics_map: Dict[str, pd.DataFrame],
+        start_date: pd.Timestamp,
+        baseline_days: int = 14,
+        intervention_days: int = 14
+    ) -> Dict[str, Any]:
+        """
+        Analyzes multiple metrics and provides a warning if too many comparisons are made.
+        """
+        results = {}
+        warnings = []
+
+        if len(metrics_map) > MAX_SAFE_METRICS:
+            msg = f"Multiple Comparison Risk: You are testing {len(metrics_map)} metrics simultaneously. This increases false discovery rate."
+            warnings.append(msg)
+            logger.warning(msg)
+
+        for metric_name, df in metrics_map.items():
+            try:
+                # Ensure df filters for the specific metric if mixed (safeguard)
+                if 'metric_name' in df.columns:
+                     df_metric = df[df['metric_name'] == metric_name]
+                else:
+                     df_metric = df
+
+                results[metric_name] = self.calculate_baseline_vs_intervention(
+                    df_metric, start_date, baseline_days, intervention_days
+                )
+            except Exception as e:
+                logger.error(f"Analysis failed for {metric_name}: {e}")
+                results[metric_name] = {"error": str(e)}
+
+        return {
+            "results": results,
+            "global_warnings": warnings
         }
