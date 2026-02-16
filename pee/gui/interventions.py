@@ -10,7 +10,7 @@ from PyQt6.QtCore import Qt, QDate, QPoint
 from PyQt6.QtGui import QAction
 from sqlalchemy.orm import Session
 
-from pee.core.database import get_db
+from pee.core.database import SessionLocal
 from pee.core.models import Intervention
 from pee.gui.utils import show_error, show_info
 
@@ -101,7 +101,7 @@ class InterventionsWidget(QWidget):
     def refresh_table(self) -> None:
         """Refreshes the interventions table from the database."""
         self.table.setRowCount(0)
-        db: Session = next(get_db())
+        db = SessionLocal()
         try:
             interventions = db.query(Intervention).all()
             self.table.setRowCount(len(interventions))
@@ -128,7 +128,7 @@ class InterventionsWidget(QWidget):
                 show_error(self, "Validation Error", "Name is required.")
                 return
 
-            db: Session = next(get_db())
+            db = SessionLocal()
             try:
                 intervention = Intervention(
                     name=data["name"],
@@ -154,7 +154,8 @@ class InterventionsWidget(QWidget):
         row = selected_rows[0].row()
         intervention_id = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
 
-        db: Session = next(get_db())
+        # 1. Fetch data
+        db = SessionLocal()
         try:
             intervention = db.query(Intervention).get(intervention_id)
             if not intervention:
@@ -167,27 +168,36 @@ class InterventionsWidget(QWidget):
                 "dosage": intervention.dosage,
                 "notes": intervention.notes
             }
-
-            dialog = InterventionDialog(self, intervention_data=data)
-            if dialog.exec():
-                new_data = dialog.get_data()
-                if not new_data["name"]:
-                    show_error(self, "Validation Error", "Name is required.")
-                    return
-
-                intervention.name = new_data["name"]
-                intervention.start_date = new_data["start_date"]
-                intervention.dosage = new_data["dosage"]
-                intervention.notes = new_data["notes"]
-
-                db.commit()
-                self.refresh_table()
-
-        except Exception as e:
-            db.rollback()
-            show_error(self, "Failed to edit intervention", str(e))
         finally:
             db.close()
+
+        # 2. Dialog interaction (outside session)
+        dialog = InterventionDialog(self, intervention_data=data)
+        if dialog.exec():
+            new_data = dialog.get_data()
+            if not new_data["name"]:
+                show_error(self, "Validation Error", "Name is required.")
+                return
+
+            # 3. Update
+            db = SessionLocal()
+            try:
+                intervention = db.query(Intervention).get(intervention_id)
+                if intervention:
+                    intervention.name = new_data["name"]
+                    intervention.start_date = new_data["start_date"]
+                    intervention.dosage = new_data["dosage"]
+                    intervention.notes = new_data["notes"]
+
+                    db.commit()
+                    self.refresh_table()
+                else:
+                    show_error(self, "Error", "Intervention no longer exists.")
+            except Exception as e:
+                db.rollback()
+                show_error(self, "Failed to edit intervention", str(e))
+            finally:
+                db.close()
 
     def close_selected_intervention(self) -> None:
         """Sets the end date of the selected intervention to today."""
@@ -199,7 +209,7 @@ class InterventionsWidget(QWidget):
         row = selected_rows[0].row()
         intervention_id = self.table.item(row, 0).data(Qt.ItemDataRole.UserRole)
 
-        db: Session = next(get_db())
+        db = SessionLocal()
         try:
             intervention = db.query(Intervention).get(intervention_id)
             if not intervention:

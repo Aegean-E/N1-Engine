@@ -1,5 +1,6 @@
 import logging
 import json
+import html
 import pandas as pd
 from typing import Dict, Any, Optional
 from PyQt6.QtWidgets import (
@@ -8,7 +9,7 @@ from PyQt6.QtWidgets import (
 )
 from sqlalchemy.orm import Session
 
-from pee.core.database import get_db
+from pee.core.database import SessionLocal
 from pee.core.models import Intervention, MetricEntry
 from pee.core.analysis import AnalysisEngine
 from pee.core.reporting import ReportGenerator
@@ -76,7 +77,7 @@ class AnalysisWidget(QWidget):
 
     def refresh_data(self) -> None:
         """Reloads interventions and metrics from the database."""
-        db: Session = next(get_db())
+        db = SessionLocal()
         try:
             # Interventions
             interventions = db.query(Intervention).all()
@@ -107,12 +108,16 @@ class AnalysisWidget(QWidget):
         b_days = self.baseline_days.value()
         i_days = self.intervention_days.value()
 
-        db: Session = next(get_db())
+        db = SessionLocal()
         try:
             intervention = db.query(Intervention).get(intervention_id)
             if not intervention:
                 show_error(self, "Error", "Intervention not found.")
                 return
+
+            # Eager load needed attributes
+            start_date_val = intervention.start_date
+            intervention_name = intervention.name
 
             # Fetch metric data
             entries = db.query(MetricEntry).filter(
@@ -133,7 +138,7 @@ class AnalysisWidget(QWidget):
             df['date'] = pd.to_datetime(df['date'])
 
             engine = AnalysisEngine()
-            start_date = pd.to_datetime(intervention.start_date)
+            start_date = pd.to_datetime(start_date_val)
 
             results = engine.calculate_baseline_vs_intervention(
                 metrics=df,
@@ -142,9 +147,9 @@ class AnalysisWidget(QWidget):
                 intervention_days=i_days
             )
 
-            self.display_results(results, intervention.name, metric_name)
+            self.display_results(results, intervention_name, metric_name)
             self.current_results = results
-            self.current_results["intervention"] = intervention.name
+            self.current_results["intervention"] = intervention_name
             self.current_results["metric"] = metric_name
             self.save_button.setEnabled(True)
             self.export_html_button.setEnabled(True)
@@ -156,6 +161,9 @@ class AnalysisWidget(QWidget):
 
     def display_results(self, results: Dict[str, Any], intervention_name: str, metric_name: str) -> None:
         """Displays the analysis results in the text area."""
+        intervention_name = html.escape(intervention_name)
+        metric_name = html.escape(metric_name)
+
         text = f"<h1>Analysis Report</h1>"
         text += f"<h3>Intervention: {intervention_name}</h3>"
         text += f"<h3>Metric: {metric_name}</h3>"
