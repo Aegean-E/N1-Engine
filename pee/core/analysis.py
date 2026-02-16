@@ -114,11 +114,11 @@ class AnalysisEngine:
 
         mean_diff = mean_intervention - mean_baseline
 
-        # Zero variance check
-        baseline_variance = 0 if np.isnan(std_baseline) else std_baseline
-        intervention_variance = 0 if np.isnan(std_intervention) else std_intervention
+        # Zero variance check (using standard deviation)
+        baseline_std_safe = 0 if np.isnan(std_baseline) else std_baseline
+        intervention_std_safe = 0 if np.isnan(std_intervention) else std_intervention
 
-        if baseline_variance == 0 and intervention_variance == 0:
+        if baseline_std_safe == 0 and intervention_std_safe == 0:
              warnings.append("Zero variance in both baseline and intervention data.")
              logger.warning("Zero variance detected.")
 
@@ -142,7 +142,7 @@ class AnalysisEngine:
 
         try:
             # Welch's t-test
-            if baseline_variance == 0 and intervention_variance == 0:
+            if baseline_std_safe == 0 and intervention_std_safe == 0:
                 if mean_diff == 0:
                     t_stat, p_value_t = 0.0, 1.0
                 else:
