@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 class AnalysisWidget(QWidget):
     """Widget for running analysis and displaying results."""
     def __init__(self):
+        self.current_intervention_id: Optional[int] = None
         super().__init__()
         self.layout = QVBoxLayout(self)
         self.report_generator = ReportGenerator()
@@ -27,8 +28,6 @@ class AnalysisWidget(QWidget):
         # Controls
         self.control_group = QGroupBox("Analysis Settings")
         self.form_layout = QFormLayout()
-
-        self.intervention_combo = QComboBox()
         self.metric_combo = QComboBox()
 
         self.baseline_days = QSpinBox()
@@ -42,7 +41,6 @@ class AnalysisWidget(QWidget):
         self.run_button = QPushButton("Run Analysis")
         self.run_button.clicked.connect(self.run_analysis)
 
-        self.form_layout.addRow("Intervention:", self.intervention_combo)
         self.form_layout.addRow("Metric:", self.metric_combo)
         self.form_layout.addRow("Baseline Days:", self.baseline_days)
         self.form_layout.addRow("Intervention Days:", self.intervention_days)
@@ -72,25 +70,36 @@ class AnalysisWidget(QWidget):
         self.results_group.setLayout(self.results_layout)
         self.layout.addWidget(self.results_group)
 
-        self.refresh_data()
         self.current_results: Optional[Dict[str, Any]] = None
 
-    def refresh_data(self) -> None:
-        """Reloads interventions and metrics from the database."""
+    def set_current_intervention(self, intervention_id: Optional[int]):
+        """Sets the active intervention and refreshes metric choices."""
+        self.current_intervention_id = intervention_id
+        is_enabled = intervention_id is not None
+
+        self.control_group.setEnabled(is_enabled)
+        self.results_text.clear()
+        self.save_button.setEnabled(False)
+        self.export_html_button.setEnabled(False)
+
+        if is_enabled:
+            self.refresh_metrics()
+        else:
+            self.metric_combo.clear()
+
+    def refresh_metrics(self) -> None:
+        """Reloads metrics from the database for the current intervention."""
+        self.metric_combo.clear()
+        if not self.current_intervention_id:
+            return
+
         db = SessionLocal()
         try:
-            # Interventions
-            interventions = db.query(Intervention).all()
-            self.intervention_combo.clear()
-            for i in interventions:
-                self.intervention_combo.addItem(f"{i.name} ({i.start_date})", i.id)
-
-            # Metrics
-            metrics = db.query(MetricEntry.metric_name).distinct().all()
-            self.metric_combo.clear()
+            metrics = db.query(MetricEntry.metric_name).filter(
+                MetricEntry.intervention_id == self.current_intervention_id
+            ).distinct().all()
             for m in metrics:
                 self.metric_combo.addItem(m[0])
-
         except Exception as e:
             show_error(self, "Failed to load analysis options", str(e))
         finally:
@@ -98,11 +107,11 @@ class AnalysisWidget(QWidget):
 
     def run_analysis(self) -> None:
         """Runs the analysis based on selected inputs."""
-        intervention_id = self.intervention_combo.currentData()
+        intervention_id = self.current_intervention_id
         metric_name = self.metric_combo.currentText()
 
         if not intervention_id or not metric_name:
-             show_error(self, "Input Error", "Please select an intervention and a metric.")
+             show_error(self, "Input Error", "An intervention and a metric must be selected.")
              return
 
         b_days = self.baseline_days.value()
@@ -119,9 +128,10 @@ class AnalysisWidget(QWidget):
             start_date_val = intervention.start_date
             intervention_name = intervention.name
 
-            # Fetch metric data
+            # Fetch metric data for this intervention only
             entries = db.query(MetricEntry).filter(
-                MetricEntry.metric_name == metric_name
+                MetricEntry.metric_name == metric_name,
+                MetricEntry.intervention_id == intervention_id
             ).order_by(MetricEntry.date).all()
 
             if not entries:

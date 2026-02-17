@@ -1,8 +1,8 @@
-# Personal Experiment Engine
+# N1-Engine
 
-## 1. Project Overview
+*A local-first, privacy-focused, and scientifically rigorous platform for personal N-of-1 experimentation.*
 
-The **Personal Experiment Engine** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis. It empowers individuals to treat their life as a laboratory, applying scientific statistical methods to personal data to determine what truly works for them.
+The **N1-Engine** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis. It empowers individuals to treat their life as a laboratory, applying scientific statistical methods to personal data to determine what truly works for them.
 
 **What it is:**
 - A structured tool for logging life interventions (e.g., "Started Magnesium", "Quit Caffeine") and tracking daily metrics (e.g., "Sleep Quality", "Energy Level").
@@ -22,20 +22,44 @@ This tool is built on the principles of "N=1 structured inference":
 *   **Reproducibility:** Analysis is deterministic and repeatable.
 *   **Separation of Concerns:** Data entry is distinct from analysis to minimize observer bias.
 
-## 3. Installation Instructions
+-   **Privacy First:** Your data is yours. It never leaves your computer.
+-   **Scientific Rigor:** The analysis goes beyond simple "before and after" comparisons, incorporating checks for data stability, effect size, and statistical significance to prevent common misinterpretations.
+-   **User Empowerment:** Provides clear, understandable reports to help you make informed decisions based on your own data.
+-   **Offline & Local:** No cloud, no subscriptions, no internet required.
+
+---
+
+## Key Features
+
+-   **Experiment-Centric Workspace:** Manage all your interventions in one place and perform actions (logging, analysis) in the context of a selected experiment.
+-   **Metric & Event Logging:** Track both quantitative daily metrics (e.g., "Sleep Quality": 8.5) and qualitative, confounding events (e.g., "High Stress Day").
+-   **Robust Statistical Analysis:**
+    -   Compares baseline vs. intervention periods.
+    -   Calculates effect size (Cohen's d) to show the *magnitude* of change.
+    -   Provides both parametric (Welch's t-test) and non-parametric (Mann-Whitney U) p-values.
+    -   Uses Bootstrap Resampling to generate robust 95% Confidence Intervals.
+    -   Checks for baseline trends to ensure stability before the intervention.
+-   **Built-in Scientific Safeguards:** Automatically warns you about small sample sizes, the risks of multiple comparisons, and other statistical pitfalls.
+-   **Data Visualization:** Instantly plot time-series charts for any metric within an intervention.
+-   **Customizable Settings:** Tune the analysis parameters to fit your needs.
+-   **Full Data Portability:** Import and export all your data to CSV for backup or external analysis.
+
+---
+
+## Installation
 
 **Prerequisites:**
-- Python 3.11 or higher.
+-   Python 3.11 or higher.
 
 **Step-by-Step Setup:**
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/Aegean-E/N1-Engine.git
     cd N1-Engine
     ```
 
-2.  **Create a virtual environment (Recommended):**
+2.  **Create and activate a virtual environment (Recommended):**
     *   **Linux/macOS:**
         ```bash
         python3 -m venv venv
@@ -51,117 +75,151 @@ This tool is built on the principles of "N=1 structured inference":
     ```bash
     pip install -r requirements.txt
     ```
-    *Note: This installs essential libraries like `pandas`, `numpy`, `scipy`, `statsmodels`, `sqlalchemy`, `PyQt6`, and `matplotlib`.*
 
-4.  **Database:**
-    The application uses a local SQLite database (`main.db`). This file is automatically created in the root directory when you first run the application.
+4.  **Run the application:**
+    ```bash
+    python run_gui.py
+    ```
+    The application will start, and a local database file (`main.db`) will be created automatically in the project's root directory.
 
-## 4. Running the Application
+---
 
-To launch the Graphical User Interface (GUI):
+## Comprehensive Usage Guide
 
-```bash
-python run_gui.py
-```
+The application is organized into a main **Workspace** and several global tabs.
 
-## 5. Usage Guide
+### The Workspace
 
-### A. Interventions Tab
-This is where you manage your experiments.
--   **Add Intervention:** Click "Add Intervention". Enter a name (e.g., "Blue Light Blockers"), a Start Date, and optional Dosage/Notes.
--   **Edit Intervention:** Double-click a row or select it and click "Edit Selected".
--   **Close Intervention:** If you stop an intervention, select it and click "Close (End Now)". This sets the End Date to today.
--   **Active vs. Closed:** "Active" interventions have no end date and are ongoing.
+This is the central hub for all your experimental work. It is split into two parts:
+1.  **Interventions Table (Top):** A master list of all your experiments.
+2.  **Action Tabs (Bottom):** A set of tabs (`Metric Setup`, `Logging`, `Events`, `Analysis`) that are scoped to the intervention you select from the table above.
 
-### B. Metrics Tab
-Log your daily quantitative data here.
--   **Log Metric:** Select a date, enter a metric name (or choose from existing ones), and a numeric value.
-    -   *Example:* Metric Name: "Sleep Quality", Value: 8.5.
--   **Visualize:** Select a metric from the dropdown to see a time-series plot of your data.
+#### Managing Interventions
 
-### C. Events Tab
-Log qualitative or significant one-off events that might impact your metrics (confounding variables).
--   **Log Event:** Enter Date, Time, Event Name (e.g., "Sick", "Travel", "High Stress"), Severity (1-5), and Notes.
--   *Use Case:* If your sleep quality drops, check the Events tab to see if you were traveling or sick during that period.
+An "intervention" is any change you are making that you want to test (e.g., "Vitamin D Supplement," "Daily Meditation," "Ketogenic Diet").
 
-### D. Analysis Tab
-This is the core of the application. It statistically compares your data before and during an intervention.
-1.  **Select Intervention:** Choose the experiment you want to analyze.
-2.  **Select Metric:** Choose the outcome metric you want to test (e.g., "Sleep Quality").
-3.  **Set Windows:**
-    -   **Baseline Days:** How many days *before* the intervention started should be used as the control group? (Recommended: 14+ days).
-    -   **Intervention Days:** How many days *after* the intervention started should be analyzed?
-4.  **Run Analysis:** Click the button to generate the report.
+-   **Add Intervention:** Click to open a dialog where you can define your experiment.
+    -   **Name:** A clear, unique name for the intervention.
+    -   **Start Date:** The date the intervention begins. This is the critical date that separates the "baseline" from the "intervention" period.
+    -   **Projected End Date (Optional):** The date you *plan* to end the experiment. This is for planning and does not affect analysis.
+    -   **Actual End Date (Optional):** The date the intervention *actually* ended.
+-   **Edit Selected:** Modify the details of an existing intervention.
+-   **Close Selected (End Now):** A shortcut to set the "Actual End Date" of a selected intervention to today.
 
-**Understanding the Report:**
--   **Windows:** Shows the exact dates, count (N), mean, and standard deviation for both periods.
--   **Trends:** Displays the linear trend (slope) and its p-value. A significant trend *before* the intervention suggests your baseline wasn't stable.
--   **Mean Difference:** The raw change in the average (Intervention Mean - Baseline Mean).
--   **Cohen's d:** Effect size.
-    -   0.2 = Small
-    -   0.5 = Medium
-    -   0.8 = Large
--   **Bootstrap 95% CI:** The Confidence Interval for the mean difference. If it doesn't cross zero (e.g., [0.5, 2.3]), the change is statistically significant at the 95% level.
+#### Workspace Tabs
+
+You must select an intervention from the top table to activate the `Logging`, `Events`, and `Analysis` tabs.
+
+##### 1. Metric Setup
+This tab is for defining *what* you will measure. It is always enabled.
+-   **Add Metric:** Define a new metric with a name, description, and unit (e.g., Name: "Sleep Quality", Description: "Subjective rating from 1-10", Unit: "score").
+-   **Why define metrics?** This ensures consistency. You can only log data for metrics that have been defined here, preventing typos (e.g., "Sleep" vs. "Sleep Quality").
+
+##### 2. Logging
+This is where you enter your daily quantitative data for the selected intervention.
+-   Select a **Date**.
+-   Choose a **Metric Name** from the dropdown (populated from `Metric Setup`).
+-   Enter the numeric **Value**.
+-   Click **Log Metric**.
+-   The bottom half of this tab allows you to **visualize** any metric you've logged for the selected intervention.
+
+##### 3. Events
+This tab is crucial for good science. Use it to log significant, qualitative events that could act as **confounding variables**.
+-   **Log Event:** Record an event with a name, date/time, severity, and notes.
+-   **Example:** If your sleep quality suddenly drops, you can check here to see if it coincided with an event like "High Stress Day," "Sick," or "Traveled." This provides context that numbers alone cannot.
+
+##### 4. Analysis
+This is the core analytical engine.
+1.  **Select a Metric:** Choose the outcome metric you want to analyze from the dropdown.
+2.  **Set Analysis Windows:**
+    -   **Baseline Days:** How many days of data *before* the intervention's start date to use as the control period.
+    -   **Intervention Days:** How many days of data *after* the start date to include in the test period.
+3.  **Run Analysis:** Generates a detailed statistical report.
+
+**Understanding the Analysis Report:**
+
+-   **Windows:** A summary of the data in each period (count, mean, standard deviation).
+-   **Trend:** Shows the linear trend (slope) of the data during each window. A significant p-value (e.g., p < 0.05) in the **baseline trend** is a red flag, suggesting your metric was already changing *before* the intervention started.
+-   **Mean Difference:** The simplest outcome: `(Intervention Mean) - (Baseline Mean)`.
+-   **Cohen's d (Effect Size):** This measures the *magnitude* of the change, independent of sample size. It's one of the most important results.
+    -   `~0.2`: Small effect (potentially unnoticeable)
+    -   `~0.5`: Medium effect (noticeable)
+    -   `~0.8+`: Large effect (easily noticeable)
+-   **Bootstrap 95% CI:** The 95% Confidence Interval for the mean difference. This provides a range of plausible values for the true effect. **If this range does not include zero, the result is statistically significant at the p < 0.05 level.** This is often more intuitive and robust than a p-value alone.
 -   **p-values:**
-    -   **Welch's t-test:** Parametric test for difference in means (assumes unequal variance). p < 0.05 is significant.
-    -   **Mann-Whitney U:** Non-parametric test (doesn't assume normal distribution). Useful for small samples or ordinal data (1-10 scales).
+    -   **Welch's t-test:** A standard test to see if the means of two groups are different.
+    -   **Mann-Whitney U:** A non-parametric alternative that doesn't assume the data is normally distributed. It's more reliable for small sample sizes or data that isn't bell-shaped (like subjective 1-10 scales).
+    -   *Interpretation:* A p-value of `< 0.05` is conventionally considered "statistically significant," meaning there's less than a 5% probability of observing such a result if there were no real effect.
+-   **Warnings:** The engine automatically flags potential issues, such as insufficient data or a high risk of false positives from testing too many metrics.
 
-### E. Data Management Tab
-Import and export your data for backup or external analysis.
--   **Import CSV:**
-    -   **Metrics CSV Format:** `date` (YYYY-MM-DD), `metric_name`, `value`.
-    -   **Interventions CSV Format:** `name`, `start_date` (YYYY-MM-DD), `end_date` (optional), `dosage`, `notes`.
-    -   **Events CSV Format:** `timestamp` (YYYY-MM-DD HH:MM:SS), `event_name`, `severity`, `notes`.
--   **Export CSV:** Saves your database content to CSV files.
+### Global Tabs
 
-## 6. Statistical Methods & Rigor
+These tabs perform actions across your entire dataset.
 
-The application employs several statistical checks to ensure robust results:
-1.  **Linear Regression (Trends):** Checks if the metric was already changing before the intervention (non-stationary baseline).
-2.  **Bootstrap Resampling:** Calculates confidence intervals by simulating 1000 "parallel universes" from your data. This is often more robust than formula-based CIs for small, skewed datasets.
-3.  **Scientific Warnings:**
-    -   **Small Sample Size:** Flags analysis if N < 7 days.
-    -   **Multiple Comparisons:** Warns if you test too many metrics at once (increasing the risk of false positives).
-    -   **Zero Variance:** Flags if the data is constant (e.g., you logged "8" for 14 days straight).
+##### Summarizer
+Generate a quick summary of all metrics and events logged for a specific intervention or within a manual date range.
 
-## 7. Troubleshooting
+##### Data Management
+Import and export your entire database to CSV files. This is essential for backups or for analyzing your data with other tools (e.g., R, Python notebooks).
 
-*   **"Analysis Failed":** Ensure you have at least 3 days of data for both the baseline and intervention periods.
-*   **"Database Locked":** This can happen if multiple instances of PEE are open. Close other instances.
-*   **"Import Failed":** Check your CSV formatting. Dates must be YYYY-MM-DD.
+##### Settings
+Configure the default parameters used by the Analysis Engine, such as the minimum number of data points required for a warning.
 
-## 8. Developer Guide
+---
 
-**Directory Structure:**
+## Troubleshooting
+
+*   **"Analysis Failed":** The most common cause is insufficient data. Ensure you have at least 3 data points in *both* the baseline and intervention windows you've defined.
+*   **"Database Locked":** This can happen if another instance of the N1-Engine is running. Ensure only one instance is open.
+*   **"Import Failed":** Double-check that your CSV file's column headers and date formats match the requirements specified in the Data Management tab.
+
+---
+
+## Developer Guide
+
+### Directory Structure
+
 ```
-/pee
-  /core            # Business logic and database
-    analysis.py    # Statistical engine
-    data_manager.py# Import/Export logic
-    models.py      # SQLAlchemy models
-  /gui             # PyQt6 Application
-    analysis.py    # Analysis widget
-    ...
-tests/             # Unit tests
-run_gui.py         # Entry point
+/N1-Engine
+  /main
+    /core            # Core business logic, database models, and analysis
+      analysis.py    # Statistical engine
+      data_manager.py# Import/Export logic
+      models.py      # SQLAlchemy ORM models
+      settings_manager.py # Handles persistent settings
+    /gui             # PyQt6 GUI application code
+      main_window.py # Main application window and layout
+      ...            # Widgets for each tab
+  /tests/            # Unit and integration tests
+  run_gui.py         # Main entry point to launch the application
+  requirements.txt
+  README.md
 ```
 
-**Running Tests:**
-To verify the integrity of the application:
+### Running Tests
+
+The project uses `pytest` for testing.
+
 ```bash
-# Install pytest if not already installed
+# Install pytest if you haven't already
 pip install pytest
 
-# Run all tests
-python -m pytest tests/
+# Run all tests from the root directory
+pytest
 ```
 
-**Contributing:**
-1.  Fork the repository.
-2.  Create a feature branch.
-3.  Write tests for your changes.
-4.  Submit a Pull Request.
+## Contributing
 
-## 9. License
+Contributions are welcome! Please feel free to fork the repository, create a feature branch, and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
-This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
+---
+
+## License
+
+This project is licensed under the GNU General Public License v3.0. See the LICENSE file for full details.
+
+---
+
+## Disclaimer
+
+The N1-Engine is a tool for informational and educational purposes only. It is **not a substitute for professional medical advice, diagnosis, or treatment**. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or analyzed with this tool.

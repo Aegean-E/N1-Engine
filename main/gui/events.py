@@ -1,14 +1,15 @@
 import logging
-from datetime import datetime
+from datetime import datetime, date
+from typing import Optional
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QPushButton, QFormLayout,
-    QLineEdit, QDateEdit, QSpinBox, QTextEdit, QTimeEdit
+    QLineEdit, QDateEdit, QSpinBox, QTextEdit, QTimeEdit, QComboBox
 )
 from PyQt6.QtCore import QDate, QTime
 from sqlalchemy.orm import Session
  
 from main.core.database import SessionLocal
-from main.core.models import EventEntry
+from main.core.models import EventEntry, Intervention
 from main.gui.utils import show_error, show_info
 
 logger = logging.getLogger(__name__)
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 class EventsWidget(QWidget):
     """Widget for logging events."""
     def __init__(self):
+        self.current_intervention_id: Optional[int] = None
         super().__init__()
         self.layout = QVBoxLayout(self)
 
@@ -49,6 +51,18 @@ class EventsWidget(QWidget):
         self.layout.addWidget(self.log_button)
         self.layout.addStretch()
 
+    def set_current_intervention(self, intervention_id: Optional[int]):
+        """Sets the currently active intervention for logging."""
+        self.current_intervention_id = intervention_id
+        is_enabled = intervention_id is not None
+
+        self.date_input.setEnabled(is_enabled)
+        self.time_input.setEnabled(is_enabled)
+        self.event_name_input.setEnabled(is_enabled)
+        self.severity_input.setEnabled(is_enabled)
+        self.notes_input.setEnabled(is_enabled)
+        self.log_button.setEnabled(is_enabled)
+
     def log_event(self) -> None:
         """Logs a new event to the database."""
         name = self.event_name_input.text()
@@ -60,6 +74,11 @@ class EventsWidget(QWidget):
         time_val = self.time_input.time().toPyTime()
         timestamp = datetime.combine(date_val, time_val)
 
+        intervention_id = self.current_intervention_id
+        if intervention_id is None:
+            show_error(self, "Error", "No intervention selected to log against.")
+            return
+
         severity = self.severity_input.value()
         notes = self.notes_input.toPlainText()
 
@@ -69,7 +88,8 @@ class EventsWidget(QWidget):
                 timestamp=timestamp,
                 event_name=name,
                 severity=severity,
-                notes=notes
+                notes=notes,
+                intervention_id=intervention_id
             )
             db.add(event)
             db.commit()

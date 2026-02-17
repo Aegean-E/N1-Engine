@@ -4,13 +4,7 @@ from scipy import stats
 from typing import Dict, Any, List, Optional, Union
 from datetime import timedelta
 import logging
- 
-from main.config import (
-    MIN_BASELINE_DAYS,
-    MIN_INTERVENTION_DAYS,
-    MIN_DATA_POINTS,
-    MAX_SAFE_METRICS
-)
+from main.core.settings_manager import settings_manager
 
 # Setup logging
 logger = logging.getLogger(__name__)
@@ -141,30 +135,34 @@ class AnalysisEngine:
         baseline_data = baseline_df['value']
         intervention_data = intervention_df['value']
 
+        min_data_points = settings_manager.get("min_data_points", 3)
+
         # Check for insufficient data points
-        if len(baseline_data) < MIN_DATA_POINTS or len(intervention_data) < MIN_DATA_POINTS:
+        if len(baseline_data) < min_data_points or len(intervention_data) < min_data_points:
             logger.warning("Insufficient data points for analysis.")
             return {
-                "error": f"Insufficient data points (minimum {MIN_DATA_POINTS} required)",
+                "error": f"Insufficient data points (minimum {min_data_points} required)",
                 "baseline_count": len(baseline_data),
                 "intervention_count": len(intervention_data)
             }
 
         # Warnings
         warnings = []
+        min_baseline_days = settings_manager.get("min_baseline_days", 7)
+        min_intervention_days = settings_manager.get("min_intervention_days", 7)
 
         # Check for insufficient sample size
         if not baseline_df.empty:
             baseline_span = (baseline_df['date'].max() - baseline_df['date'].min()).days + 1
-            if baseline_span < MIN_BASELINE_DAYS:
-                msg = f"Insufficient baseline duration: {baseline_span} days (recommended >= {MIN_BASELINE_DAYS})"
+            if baseline_span < min_baseline_days:
+                msg = f"Insufficient baseline duration: {baseline_span} days (recommended >= {min_baseline_days})"
                 warnings.append(msg)
                 logger.warning(msg)
 
         if not intervention_df.empty:
             intervention_span = (intervention_df['date'].max() - intervention_df['date'].min()).days + 1
-            if intervention_span < MIN_INTERVENTION_DAYS:
-                msg = f"Insufficient intervention duration: {intervention_span} days (recommended >= {MIN_INTERVENTION_DAYS})"
+            if intervention_span < min_intervention_days:
+                msg = f"Insufficient intervention duration: {intervention_span} days (recommended >= {min_intervention_days})"
                 warnings.append(msg)
                 logger.warning(msg)
 
@@ -286,8 +284,9 @@ class AnalysisEngine:
         results = {}
         warnings = []
 
-        if len(metrics_map) > MAX_SAFE_METRICS:
-            msg = f"Multiple Comparison Risk: You are testing {len(metrics_map)} metrics simultaneously. This increases false discovery rate."
+        max_safe_metrics = settings_manager.get("max_safe_metrics", 3)
+        if len(metrics_map) > max_safe_metrics:
+            msg = f"Multiple Comparison Risk: You are testing {len(metrics_map)} metrics simultaneously. This increases the risk of false positives (Type I error)."
             warnings.append(msg)
             logger.warning(msg)
 
