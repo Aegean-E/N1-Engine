@@ -2,8 +2,8 @@ import logging
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QPushButton, QFileDialog, QGroupBox, QLabel
 )
-from pee.core.data_manager import DataManager
-from pee.gui.utils import show_error, show_info
+from main.core.data_manager import DataManager
+from main.gui.utils import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

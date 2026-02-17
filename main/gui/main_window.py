@@ -2,13 +2,13 @@ import logging
 from PyQt6.QtWidgets import (
     QMainWindow, QTabWidget, QVBoxLayout, QWidget
 )
-
-from pee.gui.interventions import InterventionsWidget
-from pee.gui.metrics import MetricsWidget
-from pee.gui.events import EventsWidget
-from pee.gui.analysis import AnalysisWidget
-from pee.gui.data_management import DataManagementWidget
-from pee.core.database import Base, engine
+ 
+from main.gui.interventions import InterventionsWidget
+from main.gui.metrics import MetricsWidget
+from main.gui.events import EventsWidget
+from main.gui.analysis import AnalysisWidget
+from main.gui.data_management import DataManagementWidget
+from main.core.database import Base, engine
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
     """The main application window."""
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Personal Experiment Engine (PEE)")
+        self.setWindowTitle("Personal Experiment Engine")
         self.resize(1000, 800)
 
         # Ensure DB tables exist

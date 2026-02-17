@@ -4,8 +4,8 @@ from scipy import stats
 from typing import Dict, Any, List, Optional, Union
 from datetime import timedelta
 import logging
-
-from pee.config import (
+ 
+from main.config import (
     MIN_BASELINE_DAYS,
     MIN_INTERVENTION_DAYS,
     MIN_DATA_POINTS,

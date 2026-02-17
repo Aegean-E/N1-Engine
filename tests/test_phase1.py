@@ -12,9 +12,9 @@ logging.basicConfig(level=logging.INFO)
 # Add project root to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from pee.core.database import Base, engine, SessionLocal
-from pee.core.models import Intervention, Intervention as InterventionModel # Just in case
-from pee.core.analysis import AnalysisEngine
+from main.core.database import Base, engine, SessionLocal
+from main.core.models import Intervention, Intervention as InterventionModel # Just in case
+from main.core.analysis import AnalysisEngine
 
 def test_database_setup():
     print("Testing Database Setup...")

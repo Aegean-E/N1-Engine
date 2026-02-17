@@ -3,7 +3,7 @@ from typing import Optional
 from PyQt6.QtWidgets import QMessageBox, QWidget
 
 # Setup logging
-logger = logging.getLogger("pee.gui")
+logger = logging.getLogger("main.gui")
 
 def show_error(parent: Optional[QWidget], message: str, details: str = "") -> None:
     """

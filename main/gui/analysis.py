@@ -9,11 +9,11 @@ from PyQt6.QtWidgets import (
 )
 from sqlalchemy.orm import Session
 
-from pee.core.database import SessionLocal
-from pee.core.models import Intervention, MetricEntry
-from pee.core.analysis import AnalysisEngine
-from pee.core.reporting import ReportGenerator
-from pee.gui.utils import show_error, show_info
+from main.core.database import SessionLocal
+from main.core.models import Intervention, MetricEntry
+from main.core.analysis import AnalysisEngine
+from main.core.reporting import ReportGenerator
+from main.gui.utils import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

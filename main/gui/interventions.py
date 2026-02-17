@@ -9,10 +9,10 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QDate, QPoint
 from PyQt6.QtGui import QAction
 from sqlalchemy.orm import Session
-
-from pee.core.database import SessionLocal
-from pee.core.models import Intervention
-from pee.gui.utils import show_error, show_info
+ 
+from main.core.database import SessionLocal
+from main.core.models import Intervention
+from main.gui.utils import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

@@ -10,10 +10,10 @@ from sqlalchemy.orm import Session
 import pandas as pd
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
-
-from pee.core.database import SessionLocal
-from pee.core.models import MetricEntry
-from pee.gui.utils import show_error, show_info
+ 
+from main.core.database import SessionLocal
+from main.core.models import MetricEntry
+from main.gui.utils import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

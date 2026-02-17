@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QApplication, QTextEdit
 # Add project root to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from pee.gui.analysis import AnalysisWidget
+from main.gui.analysis import AnalysisWidget
 
 # Create QApplication instance if it doesn't exist
 app = QApplication.instance()

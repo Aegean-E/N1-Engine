@@ -128,7 +128,6 @@ The application employs several statistical checks to ensure robust results:
 
 *   **"Analysis Failed":** Ensure you have at least 3 days of data for both the baseline and intervention periods.
 *   **"Database Locked":** This can happen if multiple instances of PEE are open. Close other instances.
-*   **"Database Locked":** This can happen if multiple instances of the application are open. Close other instances.
 *   **"Import Failed":** Check your CSV formatting. Dates must be YYYY-MM-DD.
 
 ## 8. Developer Guide

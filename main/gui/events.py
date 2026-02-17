@@ -6,10 +6,10 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import QDate, QTime
 from sqlalchemy.orm import Session
-
-from pee.core.database import SessionLocal
-from pee.core.models import EventEntry
-from pee.gui.utils import show_error, show_info
+ 
+from main.core.database import SessionLocal
+from main.core.models import EventEntry
+from main.gui.utils import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

@@ -3,11 +3,11 @@ import pandas as pd
 import numpy as np
 import os
 from datetime import date, timedelta
-from pee.core.analysis import AnalysisEngine
-from pee.core.data_manager import DataManager
-from pee.core.models import MetricEntry, Intervention, EventEntry
-from pee.core.database import Base
-from pee.core.reporting import ReportGenerator
+from main.core.analysis import AnalysisEngine
+from main.core.data_manager import DataManager
+from main.core.models import MetricEntry, Intervention, EventEntry
+from main.core.database import Base
+from main.core.reporting import ReportGenerator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 

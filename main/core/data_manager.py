@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from typing import Literal, Optional, Generator
 import logging
 import contextlib
-from pee.core.models import MetricEntry, Intervention, EventEntry
-from pee.core.database import SessionLocal
+from main.core.models import MetricEntry, Intervention, EventEntry
+from main.core.database import SessionLocal
 
 logger = logging.getLogger(__name__)
 
