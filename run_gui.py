@@ -2,7 +2,7 @@ import sys
 import logging
 from PyQt6.QtWidgets import QApplication
 
-from pee.gui.main_window import MainWindow
+from main.gui.main_window import MainWindow
 
 # Setup logging
 logging.basicConfig(

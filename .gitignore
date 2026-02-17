@@ -19,7 +19,7 @@ coverage.xml
 *.log
 .pytest_cache/
 .mypy_cache/
-pee.db
+main.db
 *.sqlite3
 report.json
 report.html

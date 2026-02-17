@@ -1,24 +1,24 @@
-# Personal Experiment Engine (PEE)
+# Personal Experiment Engine
 
 ## 1. Project Overview
 
-The **Personal Experiment Engine (PEE)** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis. It empowers individuals to treat their life as a laboratory, applying scientific statistical methods to personal data to determine what truly works for them.
+The **Personal Experiment Engine** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis. It empowers individuals to treat their life as a laboratory, applying scientific statistical methods to personal data to determine what truly works for them.
 
-**What PEE is:**
+**What it is:**
 - A structured tool for logging life interventions (e.g., "Started Magnesium", "Quit Caffeine") and tracking daily metrics (e.g., "Sleep Quality", "Energy Level").
 - A statistical analysis engine that compares baseline periods against intervention periods to detect significant changes.
 - A cross-platform desktop application built with Python and PyQt6.
 - A privacy-focused tool: All data is stored locally on your machine in a SQLite database.
 
-**What PEE is NOT:**
-- **Not medical advice:** PEE is a software tool for data analysis. It does not replace professional medical advice. Consult a doctor for health decisions.
-- **Not a causal proof engine:** PEE identifies correlations and statistically significant shifts. However, in single-subject experiments, unmeasured confounding variables (like stress, weather, or placebo effects) can influence results.
+**What it is NOT:**
+- **Not medical advice:** This is a software tool for data analysis. It does not replace professional medical advice. Consult a doctor for health decisions.
+- **Not a causal proof engine:** It identifies correlations and statistically significant shifts. However, in single-subject experiments, unmeasured confounding variables (like stress, weather, or placebo effects) can influence results.
 
 ## 2. Scientific Philosophy
 
-PEE is built on the principles of "N=1 structured inference":
+This tool is built on the principles of "N=1 structured inference":
 *   **Epistemic Humility:** We acknowledge the limitations of self-experimentation. Results are indicators, not absolute truths.
-*   **Conservative Interpretation:** PEE favors caution. It flags small sample sizes, multiple comparisons, and insufficient data to prevent overconfidence.
+*   **Conservative Interpretation:** It favors caution. It flags small sample sizes, multiple comparisons, and insufficient data to prevent overconfidence.
 *   **Reproducibility:** Analysis is deterministic and repeatable.
 *   **Separation of Concerns:** Data entry is distinct from analysis to minimize observer bias.
 
@@ -32,7 +32,7 @@ PEE is built on the principles of "N=1 structured inference":
 1.  **Clone the repository:**
     ```bash
     git clone <repository-url>
-    cd pee
+    cd N1-Engine
     ```
 
 2.  **Create a virtual environment (Recommended):**
@@ -54,7 +54,7 @@ PEE is built on the principles of "N=1 structured inference":
     *Note: This installs essential libraries like `pandas`, `numpy`, `scipy`, `statsmodels`, `sqlalchemy`, `PyQt6`, and `matplotlib`.*
 
 4.  **Database:**
-    PEE uses a local SQLite database (`pee.db`). This file is automatically created in the root directory when you first run the application.
+    The application uses a local SQLite database (`main.db`). This file is automatically created in the root directory when you first run the application.
 
 ## 4. Running the Application
 
@@ -85,7 +85,7 @@ Log qualitative or significant one-off events that might impact your metrics (co
 -   *Use Case:* If your sleep quality drops, check the Events tab to see if you were traveling or sick during that period.
 
 ### D. Analysis Tab
-This is the core of PEE. It statistically compares your data before and during an intervention.
+This is the core of the application. It statistically compares your data before and during an intervention.
 1.  **Select Intervention:** Choose the experiment you want to analyze.
 2.  **Select Metric:** Choose the outcome metric you want to test (e.g., "Sleep Quality").
 3.  **Set Windows:**
@@ -116,7 +116,7 @@ Import and export your data for backup or external analysis.
 
 ## 6. Statistical Methods & Rigor
 
-PEE employs several statistical checks to ensure robust results:
+The application employs several statistical checks to ensure robust results:
 1.  **Linear Regression (Trends):** Checks if the metric was already changing before the intervention (non-stationary baseline).
 2.  **Bootstrap Resampling:** Calculates confidence intervals by simulating 1000 "parallel universes" from your data. This is often more robust than formula-based CIs for small, skewed datasets.
 3.  **Scientific Warnings:**
@@ -128,6 +128,7 @@ PEE employs several statistical checks to ensure robust results:
 
 *   **"Analysis Failed":** Ensure you have at least 3 days of data for both the baseline and intervention periods.
 *   **"Database Locked":** This can happen if multiple instances of PEE are open. Close other instances.
+*   **"Database Locked":** This can happen if multiple instances of the application are open. Close other instances.
 *   **"Import Failed":** Check your CSV formatting. Dates must be YYYY-MM-DD.
 
 ## 8. Developer Guide
@@ -164,4 +165,4 @@ python -m pytest tests/
 
 ## 9. License
 
-[License Name/Type] - See LICENSE file for details.
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
