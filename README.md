@@ -1,6 +1,14 @@
 # N1-Engine
 
-*A local-first, privacy-focused, and scientifically rigorous platform for personal N-of-1 experimentation.*
+*A local-first, privacy-focused, and scientifically rigorous platform for personal N=1 experimentation.*
+
+
+
+<p align="center">
+  <img src="https://github.com/Aegean-E/N1-Engine/blob/main/banner.png?raw=true" alt="N1-Engine Banner" width="1200">
+</p>
+
+
 
 The **N1-Engine** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis. It empowers individuals to treat their life as a laboratory, applying scientific statistical methods to personal data to determine what truly works for them.
 
