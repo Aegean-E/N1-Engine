@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
  
 from main.core.database import SessionLocal
 from main.core.models import Intervention
-from main.gui.utils import show_error, show_info
+from main.gui.dialogs import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

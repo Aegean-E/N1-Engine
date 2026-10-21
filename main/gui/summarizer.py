@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QDate
 from main.core.database import SessionLocal
 from main.core.models import Intervention, MetricEntry, EventEntry
-from main.gui.utils import show_error
+from main.gui.dialogs import show_error
 
 logger = logging.getLogger(__name__)
 

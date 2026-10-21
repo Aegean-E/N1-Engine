@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QPushButton, QFileDialog, QGroupBox, QLabel
 )
 from main.core.data_manager import DataManager
-from main.gui.utils import show_error, show_info
+from main.gui.dialogs import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

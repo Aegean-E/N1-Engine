@@ -27,7 +27,7 @@ class SettingsManager:
     def load_settings(self):
         if os.path.exists(self.settings_file):
             try:
-                with open(self.settings_file, 'r') as f:
+                with open(self.settings_file, 'r', encoding='utf-8') as f:
                     user_settings = json.load(f)
                 # Merge, ensuring all default keys are present
                 self.settings.update(user_settings)
@@ -43,7 +43,7 @@ class SettingsManager:
 
     def save_settings(self):
         try:
-            with open(self.settings_file, 'w') as f:
+            with open(self.settings_file, 'w', encoding='utf-8') as f:
                 json.dump(self.settings, f, indent=4)
             logger.info(f"Settings saved to '{self.settings_file}'.")
         except IOError as e:

@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
     QSpinBox, QGroupBox
 )
 from main.core.settings_manager import settings_manager
-from main.gui.utils import show_info
+from main.gui.dialogs import show_info
 
 logger = logging.getLogger(__name__)
 

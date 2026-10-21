@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "active_task": {
+    "task_id": "integrate-aikit",
+    "last_phase": "phase 5",
+    "active_phase": 5,
+    "status": "in_progress",
+    "updated_at": 1792621240.7401903
+  },
+  "checkpoints": [
+    {
+      "task_id": "integrate-aikit",
+      "phase": "phase 2",
+      "phase_num": 2,
+      "description": "[1/5] Plan: bring newly attached N1-Engine to a green aikit check (deps, test command, hygiene, structure, README cold-start)",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1792614569.3594277,
+      "timestamp_str": "2026-10-21 23:29:29",
+      "impact_assessment": {
+        "why": "attach registered the project but its Phase 4 gates fail: zero tests discovered, 4 open() without encoding, a stub __init__, a junk-drawer gui/utils module, and README cold-start drift",
+        "benefits": "the project becomes a fully governed AIKit project: real test gate, portable IO, honest structure, cold-start-ready README",
+        "risks": "contract: renaming main/gui/utils.py changes its import path; dependency: installing sqlalchemy, networkx, PyQt6 (declared in requirements.txt) into the host Python; concurrency: none, single-user local app; state: test_command edit in .aikit/project.json",
+        "mitigation": "rename stays mechanical with every call site updated and the suite re-run; only requirements.txt deps are installed; project.json edited atomically; each milestone checkpointed in the ledger"
+      }
+    },
+    {
+      "task_id": "integrate-aikit",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[2/5] Installed declared deps (sqlalchemy 2.1.6, networkx, PyQt6) and set test_command to 'python -m pytest tests'; 13/13 tests pass",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1792614652.238015,
+      "timestamp_str": "2026-10-21 23:30:52"
+    },
+    {
+      "task_id": "integrate-aikit",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[3/5] Fixed 4 open() calls with encoding='utf-8' (reporting.py, settings_manager.py x2, gui/analysis.py), removed AnalysisEngine's empty __init__ stub, renamed main/gui/utils.py to main/gui/dialogs.py with all 7 import sites updated; 13/13 tests pass",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1792614772.826807,
+      "timestamp_str": "2026-10-21 23:32:52"
+    },
+    {
+      "task_id": "integrate-aikit",
+      "phase": "phase 3",
+      "phase_num": 3,
+      "description": "[4/5] Added README cold-start quick reference (prerequisites, canonical gate, AIKit commands) and replaced the informal directory block with a compliant What's Inside tree; codebase map regenerated for the dialogs.py rename",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1792615125.5569522,
+      "timestamp_str": "2026-10-21 23:38:45"
+    },
+    {
+      "task_id": "integrate-aikit",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "[5/5] Verification: aikit check N1-Engine passes 4/4 gates (test, hygiene, guidelines, secrets); 13/13 tests pass; ADR-001/002 recorded; checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1792615127.152861,
+      "timestamp_str": "2026-10-21 23:38:47"
+    },
+    {
+      "task_id": "integrate-aikit",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'integrate-aikit' completed successfully.",
+      "status": "completed",
+      "timestamp": 1792615136.6721747,
+      "timestamp_str": "2026-10-21 23:38:56"
+    },
+    {
+      "task_id": "integrate-aikit",
+      "phase": "phase 5",
+      "phase_num": 5,
+      "description": "[delivery] Publish N1-Engine's integrated state to github.com/Aegean-E/N1-Engine: working tree grafted onto origin/main, explicit staging, checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1792621240.7401903,
+      "timestamp_str": "2026-10-22 01:20:40"
+    }
+  ]
+}

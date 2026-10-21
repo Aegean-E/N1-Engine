@@ -13,9 +13,6 @@ class AnalysisEngine:
     """
     Engine for analyzing experiment data.
     """
-    def __init__(self):
-        pass
-
     def calculate_trend(self, series: pd.Series) -> Dict[str, Optional[float]]:
         """
         Calculates linear trend (slope and p-value) for a time series.

@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "name": "n1-engine",
+  "test_command": "python -m pytest tests",
+  "gates": {},
+  "created": "2026-10-21"
+}

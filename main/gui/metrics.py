@@ -14,7 +14,7 @@ from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
  
 from main.core.database import SessionLocal
 from main.core.models import MetricEntry, MetricDefinition, Intervention
-from main.gui.utils import show_error, show_info
+from main.gui.dialogs import show_error, show_info
 
 logger = logging.getLogger(__name__)
 

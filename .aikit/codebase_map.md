@@ -1,0 +1,290 @@
+# Codebase Map & Symbol Catalog 🗺️
+
+> **AUTO-GENERATED & VERIFIED BY `scripts/update_knowledge_base.py`**
+> This document provides an automated, up-to-date registry of all modules, classes, and exported functions across this repository.
+
+---
+
+## 📊 Codebase Metrics
+- **Total Python Modules**: `25`
+- **Total Classes**: `22`
+- **Total Top-Level Functions**: `17`
+- **Total Class Methods**: `71`
+- **Total Source Lines**: `2835`
+
+---
+
+## 📦 Modules & Exported Symbols
+
+### [`main/__init__.py`](main/__init__.py)
+**Size**: `0` lines (`0` bytes)
+
+---
+
+### [`main/api/__init__.py`](main/api/__init__.py)
+**Size**: `0` lines (`0` bytes)
+
+---
+
+### [`main/config.py`](main/config.py)
+**Size**: `11` lines (`277` bytes)
+
+---
+
+### [`main/core/__init__.py`](main/core/__init__.py)
+**Size**: `0` lines (`0` bytes)
+
+---
+
+### [`main/core/analysis.py`](main/core/analysis.py)
+**Size**: `308` lines (`12570` bytes)
+
+**Classes:**
+- `class AnalysisEngine` - *Engine for analyzing experiment data.*
+  - Method `.calculate_trend(series)` - *Calculates linear trend (slope and p-value) for a time series.*
+  - Method `.bootstrap_ci(group1, group2, n_bootstraps, confidence_level)` - *Calculates confidence interval for the difference in means (group2 - group1) using bootstrap resampling.*
+  - Method `.correlation_matrix(metrics_df)` - *Calculates correlation matrix for multiple metrics.*
+  - Method `.calculate_baseline_vs_intervention(metrics, start_date, baseline_days, intervention_days)` - *Analyzes metric data comparing a baseline period to an intervention period.*
+  - Method `.analyze_multiple_metrics(metrics_map, start_date, baseline_days, intervention_days)` - *Analyzes multiple metrics and provides a warning if too many comparisons are made.*
+
+---
+
+### [`main/core/data_manager.py`](main/core/data_manager.py)
+**Size**: `188` lines (`8672` bytes)
+
+**Classes:**
+- `class DataManager` - *Manages data import and export.*
+  - Method `.__init__(db)`
+  - Method `._get_session()` - *Yields the existing session or creates a new one.*
+  - Method `.import_from_csv(filepath, data_type)` - *Imports data from a CSV file.*
+  - Method `.export_to_csv(filepath, data_type)` - *Exports data to a CSV file.*
+
+---
+
+### [`main/core/database.py`](main/core/database.py)
+**Size**: `18` lines (`491` bytes)
+
+**Functions:**
+- `def get_db()`
+
+---
+
+### [`main/core/models.py`](main/core/models.py)
+**Size**: `63` lines (`2509` bytes)
+
+**Classes:**
+- `class Intervention`
+  - Method `.__repr__()`
+- `class MetricDefinition`
+  - Method `.__repr__()`
+- `class MetricEntry`
+  - Method `.__repr__()`
+- `class EventEntry`
+  - Method `.__repr__()`
+
+---
+
+### [`main/core/reporting.py`](main/core/reporting.py)
+**Size**: `144` lines (`5648` bytes)
+
+**Classes:**
+- `class ReportGenerator` - *Generates HTML reports from analysis results.*
+  - Method `.generate_html_report(results, filepath, intervention_name, metric_name)` - *Generates an HTML report and saves it to the specified filepath.*
+
+---
+
+### [`main/core/settings_manager.py`](main/core/settings_manager.py)
+**Size**: `62` lines (`2254` bytes)
+
+**Classes:**
+- `class SettingsManager`
+  - Method `.__init__(settings_file)`
+  - Method `.load_settings()`
+  - Method `.save_settings()`
+  - Method `.get(key, default)`
+  - Method `.set(key, value)`
+
+---
+
+### [`main/gui/__init__.py`](main/gui/__init__.py)
+**Size**: `0` lines (`0` bytes)
+
+---
+
+### [`main/gui/analysis.py`](main/gui/analysis.py)
+**Size**: `268` lines (`10569` bytes)
+
+**Classes:**
+- `class AnalysisWidget` - *Widget for running analysis and displaying results.*
+  - Method `.__init__()`
+  - Method `.set_current_intervention(intervention_id)` - *Sets the active intervention and refreshes metric choices.*
+  - Method `.refresh_metrics()` - *Reloads metrics from the database for the current intervention.*
+  - Method `.run_analysis()` - *Runs the analysis based on selected inputs.*
+  - Method `.display_results(results, intervention_name, metric_name)` - *Displays the analysis results in the text area.*
+  - Method `.save_report()` - *Saves the current report to a JSON file.*
+  - Method `.export_html_report()` - *Exports the current report to an HTML file.*
+
+---
+
+### [`main/gui/data_management.py`](main/gui/data_management.py)
+**Size**: `73` lines (`3173` bytes)
+
+**Classes:**
+- `class DataManagementWidget` - *Widget for importing and exporting data.*
+  - Method `.__init__()`
+  - Method `.import_data(data_type)`
+  - Method `.export_data(data_type)`
+
+---
+
+### [`main/gui/dialogs.py`](main/gui/dialogs.py)
+**Size**: `56` lines (`1544` bytes)
+
+**Functions:**
+- `def show_error(parent, message, details)` - *Shows an error message box.*
+- `def show_warning(parent, message, details)` - *Shows a warning message box.*
+- `def show_info(parent, message)` - *Shows an info message box.*
+
+---
+
+### [`main/gui/events.py`](main/gui/events.py)
+**Size**: `108` lines (`3706` bytes)
+
+**Classes:**
+- `class EventsWidget` - *Widget for logging events.*
+  - Method `.__init__()`
+  - Method `.set_current_intervention(intervention_id)` - *Sets the currently active intervention for logging.*
+  - Method `.log_event()` - *Logs a new event to the database.*
+
+---
+
+### [`main/gui/interventions.py`](main/gui/interventions.py)
+**Size**: `350` lines (`15291` bytes)
+
+**Classes:**
+- `class DateTableWidgetItem` - *Custom QTableWidgetItem for sorting dates, including None values.*
+  - Method `.__lt__(other)`
+- `class InterventionDialog` - *Dialog for adding or editing an intervention.*
+  - Method `.__init__(parent, intervention_data)`
+  - Method `.get_data()` - *Returns the data entered in the dialog.*
+- `class InterventionsWidget`
+  - Method `.__init__()`
+  - Method `.on_selection_changed()` - *Emits the ID of the currently selected intervention.*
+  - Method `.get_selected_intervention_id()` - *Helper to get the ID of the selected row.*
+  - Method `.refresh_table()` - *Refreshes the interventions table from the database.*
+  - Method `.add_intervention()` - *Opens the dialog to add a new intervention.*
+  - Method `.edit_selected_intervention()` - *Opens dialog to edit the selected intervention.*
+  - Method `.close_selected_intervention()` - *Sets the end date of the selected intervention to today.*
+  - Method `.show_context_menu(pos)` - *Shows context menu for table items.*
+
+---
+
+### [`main/gui/main_window.py`](main/gui/main_window.py)
+**Size**: `111` lines (`4450` bytes)
+
+**Classes:**
+- `class WorkspaceWidget` - *A widget that encapsulates the main experiment workflow.*
+  - Method `.__init__()`
+  - Method `.on_intervention_selected(intervention_id)` - *Propagates the selected intervention to child tabs.*
+  - Method `.refresh_workspace()` - *Refreshes the data in the workspace view.*
+- `class MainWindow` - *The main application window.*
+  - Method `.__init__()`
+  - Method `.on_tab_change(index)` - *Handles tab change events to refresh data in the selected tab.*
+
+---
+
+### [`main/gui/metrics.py`](main/gui/metrics.py)
+**Size**: `357` lines (`13772` bytes)
+
+**Classes:**
+- `class LoggingWidget` - *Widget for logging metrics.*
+  - Method `.__init__()`
+  - Method `.set_current_intervention(intervention_id)` - *Sets the currently active intervention for logging and viewing.*
+  - Method `.refresh_combos()` - *Loads dropdown contents from the database.*
+  - Method `.log_metric()` - *Logs a new metric entry to the database.*
+  - Method `.update_plot()` - *Updates the time-series plot for the selected metric.*
+- `class MetricDefinitionDialog` - *Dialog for adding or editing a metric definition.*
+  - Method `.__init__(parent, metric_data)`
+  - Method `.get_data()`
+- `class MetricDefinitionWidget` - *Widget for defining and managing metrics.*
+  - Method `.__init__()`
+  - Method `.refresh_table()`
+  - Method `.add_metric()`
+  - Method `.edit_metric()`
+  - Method `.delete_metric()`
+
+---
+
+### [`main/gui/settings.py`](main/gui/settings.py)
+**Size**: `63` lines (`2720` bytes)
+
+**Classes:**
+- `class SettingsWidget` - *Widget for managing application settings.*
+  - Method `.__init__()`
+  - Method `.load_settings()` - *Loads settings from the manager and updates the UI.*
+  - Method `.save_settings()` - *Saves settings from the UI to the manager and file.*
+
+---
+
+### [`main/gui/summarizer.py`](main/gui/summarizer.py)
+**Size**: `186` lines (`8307` bytes)
+
+**Classes:**
+- `class SummarizerWidget` - *Widget for generating a daily/weekly summary.*
+  - Method `.__init__()`
+  - Method `.refresh_interventions()` - *Reloads interventions from the database into the combo box.*
+  - Method `.on_intervention_changed(index)` - *Handles selection change in the intervention combo box.*
+  - Method `.generate_summary()` - *Queries the database and generates a summary for the selected date range.*
+  - Method `.display_summary(interventions, metrics, events, start_date, end_date, intervention_name)` - *Formats and displays the summary.*
+
+---
+
+### [`main/utils/__init__.py`](main/utils/__init__.py)
+**Size**: `0` lines (`0` bytes)
+
+---
+
+### [`run_gui.py`](run_gui.py)
+**Size**: `20` lines (`396` bytes)
+
+**Functions:**
+- `def main()`
+
+---
+
+### [`tests/test_gui_logic.py`](tests/test_gui_logic.py)
+**Size**: `69` lines (`2276` bytes)
+
+**Classes:**
+- `class TestAnalysisWidgetLogic`
+  - Method `.setUp()`
+  - Method `.test_display_results_formatting()`
+  - Method `.test_display_error()`
+
+---
+
+### [`tests/test_new_features.py`](tests/test_new_features.py)
+**Size**: `110` lines (`3489` bytes)
+
+**Functions:**
+- `def db_session()`
+- `def test_calculate_trend()`
+- `def test_bootstrap_ci()`
+- `def test_data_manager_import_export(db_session, tmp_path)`
+- `def test_report_generator(tmp_path)`
+
+---
+
+### [`tests/test_phase1.py`](tests/test_phase1.py)
+**Size**: `270` lines (`8950` bytes)
+
+**Functions:**
+- `def test_database_setup()`
+- `def test_analysis_engine()`
+- `def test_insufficient_duration_warning()`
+- `def test_mixed_metrics_error()`
+- `def test_zero_variance()`
+- `def test_multiple_comparison_warning()`
+- `def test_window_duration_exactness()`
+
+---

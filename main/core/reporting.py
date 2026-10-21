@@ -135,7 +135,7 @@ class ReportGenerator:
             </html>
             """
 
-            with open(filepath, 'w') as f:
+            with open(filepath, 'w', encoding='utf-8') as f:
                 f.write(html)
 
             return True

@@ -13,7 +13,7 @@ from main.core.database import SessionLocal
 from main.core.models import Intervention, MetricEntry
 from main.core.analysis import AnalysisEngine
 from main.core.reporting import ReportGenerator
-from main.gui.utils import show_error, show_info
+from main.gui.dialogs import show_error, show_info
 
 logger = logging.getLogger(__name__)
 
@@ -243,7 +243,7 @@ class AnalysisWidget(QWidget):
         filename, _ = QFileDialog.getSaveFileName(self, "Save Report", "report.json", "JSON Files (*.json)")
         if filename:
             try:
-                with open(filename, 'w') as f:
+                with open(filename, 'w', encoding='utf-8') as f:
                     json.dump(self.current_results, f, indent=4, default=str)
                 show_info(self, f"Report saved to {filename}")
             except Exception as e:

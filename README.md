@@ -35,6 +35,22 @@ This tool is built on the principles of "N=1 structured inference":
 -   **User Empowerment:** Provides clear, understandable reports to help you make informed decisions based on your own data.
 -   **Offline & Local:** No cloud, no subscriptions, no internet required.
 
+## ⚡ 30-Second Cold-Start Quick Reference
+
+- **Runtime Prerequisites**: Python 3.11+ with the `requirements.txt` stack (pandas, numpy, scipy, statsmodels, SQLAlchemy, PyQt6)
+- **Canonical Regression Shield Gate**:
+  ```bash
+  python -m pytest tests
+  ```
+
+### 🛠️ AIKit Commands (run from the AIKit workspace root)
+| Role | Command |
+|---|---|
+| Status, task and gates | `python aikit.py status N1-Engine` |
+| Delivery check (clean tree + map) | `python aikit.py check N1-Engine --strict` |
+| Repair memory and map, then check | `python aikit.py fix N1-Engine` |
+| Resume an interrupted task | `python aikit.py resume N1-Engine` |
+
 ---
 
 ## Key Features
@@ -185,23 +201,23 @@ Configure the default parameters used by the Analysis Engine, such as the minimu
 
 ## Developer Guide
 
-### Directory Structure
+### 📦 What's Inside
 
-```
-/N1-Engine
-  /main
-    /core            # Core business logic, database models, and analysis
-      analysis.py    # Statistical engine
-      data_manager.py# Import/Export logic
-      models.py      # SQLAlchemy ORM models
-      settings_manager.py # Handles persistent settings
-    /gui             # PyQt6 GUI application code
-      main_window.py # Main application window and layout
-      ...            # Widgets for each tab
-  /tests/            # Unit and integration tests
-  run_gui.py         # Main entry point to launch the application
-  requirements.txt
-  README.md
+```text
+N1-Engine/
+├── .aikit/                  <- AIKit project memory: config, guidelines, decisions, ledger, map
+├── main/
+│   ├── core/                <- business logic: statistics, ORM models, database, reporting
+│   ├── gui/                 <- PyQt6 widgets, windows and dialogs
+│   ├── api/                 <- reserved package (empty)
+│   └── utils/               <- reserved package (empty)
+├── tests/                   <- pytest regression suite
+├── run_gui.py               <- application entry point
+├── requirements.txt         <- declared dependencies
+├── README.md
+├── LICENSE
+├── banner.png
+└── .gitignore
 ```
 
 ### Running Tests
@@ -213,7 +229,7 @@ The project uses `pytest` for testing.
 pip install pytest
 
 # Run all tests from the root directory
-pytest
+python -m pytest tests
 ```
 
 ## Contributing
