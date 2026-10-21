@@ -207,6 +207,8 @@ Configure the default parameters used by the Analysis Engine, such as the minimu
 N1-Engine/
 ├── .aikit/                  <- AIKit project memory: config, guidelines, decisions, ledger, map
 ├── main/
+│   ├── __init__.py          <- package marker
+│   ├── config.py            <- scientific thresholds and database URL
 │   ├── core/                <- business logic: statistics, ORM models, database, reporting
 │   ├── gui/                 <- PyQt6 widgets, windows and dialogs
 │   ├── api/                 <- reserved package (empty)
