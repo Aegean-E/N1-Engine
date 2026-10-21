@@ -5,7 +5,7 @@
     "last_phase": "phase 5",
     "active_phase": 5,
     "status": "in_progress",
-    "updated_at": 1792621240.7401903
+    "updated_at": 1792621324.1677012
   },
   "checkpoints": [
     {
@@ -82,6 +82,16 @@
       "status": "in_progress",
       "timestamp": 1792621240.7401903,
       "timestamp_str": "2026-10-22 01:20:40"
+    },
+    {
+      "task_id": "integrate-aikit",
+      "phase": "phase 5",
+      "phase_num": 5,
+      "description": "[delivery] Strict check caught README tree omissions (main/__init__.py, main/config.py) now that the project is a git repo; fixed, 4/4 gates pass, checklists: passed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1792621324.1677012,
+      "timestamp_str": "2026-10-22 01:22:04"
     }
   ]
 }
