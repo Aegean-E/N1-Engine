@@ -1,5 +1,7 @@
 # N1-Engine
 
+[![AIKit Integrated](https://img.shields.io/badge/AIKit-integrated-6f42c1)](https://github.com/Aegean-E/AIKit)
+
 *A local-first, privacy-focused, and scientifically rigorous platform for personal N=1 experimentation.*
 
 
@@ -242,7 +244,7 @@ Contributions are welcome! Please feel free to fork the repository, create a fea
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0. See the LICENSE file for full details.
+This project is licensed under the Apache License 2.0. See the LICENSE file for full details.
 
 ---
 
