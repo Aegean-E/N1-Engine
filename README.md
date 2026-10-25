@@ -219,6 +219,7 @@ N1-Engine/
 ├── run_gui.py               <- application entry point
 ├── requirements.txt         <- declared dependencies
 ├── README.md
+├── COMMERCIAL.md
 ├── LICENSE
 ├── banner.png
 └── .gitignore
