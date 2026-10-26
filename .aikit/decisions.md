@@ -16,3 +16,9 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Context**: the AIKit structure gate flags `utils` as a junk-drawer name; the module holds exactly one role: QMessageBox helpers (show_error, show_warning, show_info).
 - **Decision**: renamed the module and updated all 7 import sites; behavior unchanged, 13/13 tests pass.
 - **Consequences**: import path `main.gui.utils` no longer exists; `main/utils/` and `main/api/` remain as documented empty reserved packages.
+
+## Licensing migration (apache-final)
+
+- New versions use the Aegean License 1.1 (AL-1.1); versions up to and including `apache-final` remain under the Apache License 2.0.
+- Rights holder: AegeanWorks; commercial use under ACL-1.0.
+- Counsel review of the 1.1 texts remains pending.

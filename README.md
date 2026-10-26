@@ -1,6 +1,6 @@
 # N1-Engine
 
-[![AIKit Integrated](https://img.shields.io/badge/AIKit-integrated-6f42c1)](https://github.com/Aegean-E/AIKit)
+[![AIKit Integrated](https://img.shields.io/badge/AIKit-integrated-6f42c1)](https://github.com/AegeanWorks/AIKit)
 
 *A local-first, privacy-focused, and scientifically rigorous platform for personal N=1 experimentation.*
 
@@ -221,6 +221,8 @@ N1-Engine/
 ├── README.md
 ├── COMMERCIAL.md
 ├── LICENSE
+├── LICENSES/                 <- REUSE license texts
+├── REUSE.toml                <- Machine-readable SPDX metadata
 ├── banner.png
 └── .gitignore
 ```
@@ -243,12 +245,14 @@ Contributions are welcome! Please feel free to fork the repository, create a fea
 
 ---
 
-## License
-
-This project is licensed under the Apache License 2.0. See the LICENSE file for full details.
-
 ---
 
 ## Disclaimer
 
 The N1-Engine is a tool for informational and educational purposes only. It is **not a substitute for professional medical advice, diagnosis, or treatment**. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or analyzed with this tool.
+
+> **License history:** versions up to and including `apache-final` remain available under the Apache License 2.0.
+
+## 📜 License
+
+Free for personal use under the Aegean License 1.1 (AL-1.1); see [LICENSE](LICENSE). Any commercial use needs the Aegean Commercial License 1.0 (ACL-1.0); see [COMMERCIAL.md](COMMERCIAL.md).
