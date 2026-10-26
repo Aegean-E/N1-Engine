@@ -2,7 +2,6 @@
 
 > This project is free for personal use under the **Aegean License 1.1 (AL-1.1)** in [LICENSE](LICENSE). Every commercial or
 > organizational use needs the paid **Aegean Commercial License 1.0 (ACL-1.0)**.
-> Versions up to and including `apache-final` remain available under the Apache License 2.0.
 
 ---
 

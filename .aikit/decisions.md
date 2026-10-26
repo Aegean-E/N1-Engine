@@ -22,3 +22,7 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - New versions use the Aegean License 1.1 (AL-1.1); versions up to and including `apache-final` remain under the Apache License 2.0.
 - Rights holder: AegeanWorks; commercial use under ACL-1.0.
 - Counsel review of the 1.1 texts remains pending.
+
+## License notice cleanup (2026-10-26)
+
+- The license-history notes and the old-license boundary tag were removed: the project is offered only under the Aegean License 1.1 (AL-1.1), with commercial use under ACL-1.0.
