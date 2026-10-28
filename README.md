@@ -227,7 +227,6 @@ N1-Engine/
 ├── LICENSE
 ├── LICENSES/                 <- REUSE license texts
 ├── REUSE.toml                <- Machine-readable SPDX metadata
-├── banner.png
 └── .gitignore
 ```
 
