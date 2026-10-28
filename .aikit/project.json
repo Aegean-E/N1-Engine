@@ -13,6 +13,9 @@
   "ui_source": "detected",
   "topics": [
     "aikit",
+    "source-available",
+    "aegean-license",
+    "commercial-license",
     "fastapi",
     "health-tracking",
     "local-first",
@@ -22,14 +25,11 @@
     "python",
     "science",
     "self-experimentation",
-    "source-available",
     "statistics",
     "aegeanworks",
-    "dashboard",
     "desktop-app",
     "gui",
     "health",
-    "software",
     "user-interface",
     "desktop-application"
   ],
@@ -48,5 +48,10 @@
     "desktop-application",
     "statistics",
     "self-experimentation"
+  ],
+  "license_topics": [
+    "source-available",
+    "aegean-license",
+    "commercial-license"
   ]
 }
