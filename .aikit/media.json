@@ -15,17 +15,31 @@
   "assets": {
     "logo": {
       "path": "assets/logo.jpg",
-      "status": "pending_review",
+      "status": "approved",
       "commit": "",
       "generated_at": "2026-10-28T15:55:20",
-      "review": null
+      "review": {
+        "status": "approved",
+        "reviewer": "subagent:vision-review",
+        "method": "vision",
+        "notes": "N1 Engine HEALTH",
+        "score": 90,
+        "reviewed_at": "2026-10-28T17:52:09"
+      }
     },
     "social_preview": {
-      "path": "assets/social-preview.jpg",
-      "status": "pending_review",
+      "path": "assets/social-preview.png",
+      "status": "approved",
       "commit": "",
-      "generated_at": "2026-10-28T15:55:20",
-      "review": null
+      "generated_at": "2026-10-28T17:40:37",
+      "review": {
+        "status": "approved",
+        "reviewer": "subagent:vision-review",
+        "method": "vision",
+        "notes": "N1 Engine\nHEALTH",
+        "score": 92,
+        "reviewed_at": "2026-10-28T17:52:09"
+      }
     }
   },
   "screenshots": [],
