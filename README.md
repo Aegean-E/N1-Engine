@@ -1,5 +1,10 @@
 # N1-Engine
 
+<!-- aegean:media:start -->
+<p align="center"><img src="assets/logo.svg" alt="N1-Engine logo" width="96" height="96"></p>
+<p align="center"><img src="assets/social-preview.svg" alt="N1-Engine social preview" width="100%"></p>
+<!-- aegean:media:end -->
+
 [![AIKit Integrated](https://img.shields.io/badge/AIKit-integrated-6f42c1)](https://github.com/AegeanWorks/AIKit)
 
 *A local-first, privacy-focused, and scientifically rigorous platform for personal N=1 experimentation.*

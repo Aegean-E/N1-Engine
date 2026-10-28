@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "name": "N1-Engine",
+  "repo": "N1-Engine",
+  "has_ui": true,
+  "ui_kind": "desktop",
+  "palette": [
+    "#100b1f",
+    "#2b1750",
+    "#a78bfa",
+    "#f5f3ff"
+  ],
+  "assets": {
+    "logo": {
+      "path": "assets/logo.svg",
+      "status": "approved",
+      "commit": "",
+      "generated_at": "2026-10-28T08:02:10",
+      "review": {
+        "status": "approved",
+        "reviewer": "subagent:vision-review",
+        "method": "vision",
+        "notes": "NE monogram in gold/yellow on purple, aligned, legible, coherent.",
+        "score": 94,
+        "reviewed_at": "2026-10-28T08:10:41"
+      }
+    },
+    "social_preview": {
+      "path": "assets/social-preview.svg",
+      "status": "approved",
+      "commit": "",
+      "generated_at": "2026-10-28T08:02:10",
+      "review": {
+        "status": "approved",
+        "reviewer": "subagent:vision-review",
+        "method": "vision",
+        "notes": "NE icon, title, personal N1 experiment description, DESKTOP tag.",
+        "score": 94,
+        "reviewed_at": "2026-10-28T08:10:41"
+      }
+    },
+    "social_preview_png": {
+      "path": "assets/social-preview.png",
+      "status": "pending_review",
+      "commit": "",
+      "generated_at": "2026-10-28T08:02:11",
+      "review": null
+    }
+  },
+  "screenshots": []
+}
