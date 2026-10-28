@@ -5,53 +5,48 @@
   "has_ui": true,
   "ui_kind": "desktop",
   "palette": [
-    "#100b1f",
-    "#2b1750",
-    "#a78bfa",
-    "#f5f3ff"
+    "#0b0a1a",
+    "#241b4a",
+    "#f0abfc",
+    "#67e8f9"
   ],
+  "motif": "atom",
+  "layout": "left",
   "assets": {
     "logo": {
       "path": "assets/logo.svg",
       "status": "approved",
       "commit": "",
-      "generated_at": "2026-10-28T08:02:10",
+      "generated_at": "2026-10-28T08:46:38",
       "review": {
         "status": "approved",
         "reviewer": "subagent:vision-review",
         "method": "vision",
-        "notes": "NE monogram in gold/yellow on purple, aligned, legible, coherent.",
-        "score": 94,
-        "reviewed_at": "2026-10-28T08:10:41"
+        "notes": "NE atom with nucleus, distinct from orrery",
+        "score": 89,
+        "reviewed_at": "2026-10-28T08:58:20"
       }
     },
     "social_preview": {
       "path": "assets/social-preview.svg",
       "status": "approved",
       "commit": "",
-      "generated_at": "2026-10-28T08:02:10",
+      "generated_at": "2026-10-28T08:46:38",
       "review": {
         "status": "approved",
         "reviewer": "subagent:vision-review",
         "method": "vision",
-        "notes": "NE icon, title, personal N1 experiment description, DESKTOP tag.",
-        "score": 94,
-        "reviewed_at": "2026-10-28T08:10:41"
+        "notes": "Consistent template, legible",
+        "score": 89,
+        "reviewed_at": "2026-10-28T08:58:20"
       }
     },
     "social_preview_png": {
       "path": "assets/social-preview.png",
-      "status": "approved",
+      "status": "pending_review",
       "commit": "",
-      "generated_at": "2026-10-28T08:02:11",
-      "review": {
-        "status": "approved",
-        "reviewer": "subagent:vision-review",
-        "method": "structural",
-        "notes": "Rendered from the approved 1280x640 social SVG; exact dimensions verified.",
-        "score": null,
-        "reviewed_at": "2026-10-28T08:15:50"
-      }
+      "generated_at": "2026-10-28T08:46:39",
+      "review": null
     }
   },
   "screenshots": []
