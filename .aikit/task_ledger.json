@@ -13,52 +13,6 @@
   "checkpoints": [
     {
       "task_id": "integrate-aikit",
-      "phase": "phase 2",
-      "phase_num": 2,
-      "description": "[1/5] Plan: bring newly attached N1-Engine to a green aikit check (deps, test command, hygiene, structure, README cold-start)",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792614569.3594277,
-      "timestamp_str": "2026-10-21 23:29:29",
-      "impact_assessment": {
-        "why": "attach registered the project but its Phase 4 gates fail: zero tests discovered, 4 open() without encoding, a stub __init__, a junk-drawer gui/utils module, and README cold-start drift",
-        "benefits": "the project becomes a fully governed AIKit project: real test gate, portable IO, honest structure, cold-start-ready README",
-        "risks": "contract: renaming main/gui/utils.py changes its import path; dependency: installing sqlalchemy, networkx, PyQt6 (declared in requirements.txt) into the host Python; concurrency: none, single-user local app; state: test_command edit in .aikit/project.json",
-        "mitigation": "rename stays mechanical with every call site updated and the suite re-run; only requirements.txt deps are installed; project.json edited atomically; each milestone checkpointed in the ledger"
-      }
-    },
-    {
-      "task_id": "integrate-aikit",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[2/5] Installed declared deps (sqlalchemy 2.1.6, networkx, PyQt6) and set test_command to 'python -m pytest tests'; 13/13 tests pass",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792614652.238015,
-      "timestamp_str": "2026-10-21 23:30:52"
-    },
-    {
-      "task_id": "integrate-aikit",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[3/5] Fixed 4 open() calls with encoding='utf-8' (reporting.py, settings_manager.py x2, gui/analysis.py), removed AnalysisEngine's empty __init__ stub, renamed main/gui/utils.py to main/gui/dialogs.py with all 7 import sites updated; 13/13 tests pass",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792614772.826807,
-      "timestamp_str": "2026-10-21 23:32:52"
-    },
-    {
-      "task_id": "integrate-aikit",
-      "phase": "phase 3",
-      "phase_num": 3,
-      "description": "[4/5] Added README cold-start quick reference (prerequisites, canonical gate, AIKit commands) and replaced the informal directory block with a compliant What's Inside tree; codebase map regenerated for the dialogs.py rename",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792615125.5569522,
-      "timestamp_str": "2026-10-21 23:38:45"
-    },
-    {
-      "task_id": "integrate-aikit",
       "phase": "phase 4",
       "phase_num": 4,
       "description": "[5/5] Verification: aikit check N1-Engine passes 4/4 gates (test, hygiene, guidelines, secrets); 13/13 tests pass; ADR-001/002 recorded; checklists: passed",
@@ -104,30 +58,6 @@
       "status": "completed",
       "timestamp": 1792691252.536124,
       "timestamp_str": "2026-10-22 20:47:32"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 1",
-      "phase_num": 3,
-      "description": "Reforge stage 1: window 3, 3 commit(s), 2 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793291283.9634697,
-      "timestamp_str": "2026-10-29 19:28:03",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 2",
-      "phase_num": 3,
-      "description": "Reforge stage 2: window 6, 3 commit(s), 2 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired, 1 binary not analysed",
-      "files_affected": [
-        "assets/social-preview.png"
-      ],
-      "status": "in_progress",
-      "timestamp": 1793291401.3110461,
-      "timestamp_str": "2026-10-29 19:30:01",
-      "agent": "opencode"
     },
     {
       "task_id": "reforge:run-1",
@@ -229,6 +159,90 @@
       "timestamp": 1793292163.1897314,
       "timestamp_str": "2026-10-29 19:42:43",
       "agent": "opencode:reforge"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 10",
+      "phase_num": 3,
+      "description": "Reforge stage 10: window 30, 3 commit(s), 14 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793292401.2062535,
+      "timestamp_str": "2026-10-29 19:46:41",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 11",
+      "phase_num": 3,
+      "description": "Reforge stage 11: window 33, 3 commit(s), 24 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793292447.756253,
+      "timestamp_str": "2026-10-29 19:47:27",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 12",
+      "phase_num": 3,
+      "description": "Reforge stage 12: window 36, 3 commit(s), 12 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793292528.5520408,
+      "timestamp_str": "2026-10-29 19:48:48",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 13",
+      "phase_num": 3,
+      "description": "Reforge stage 13: window 39, 3 commit(s), 12 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793292574.7871413,
+      "timestamp_str": "2026-10-29 19:49:34",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 14",
+      "phase_num": 3,
+      "description": "Reforge stage 14: window 42, 3 commit(s), 11 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired, 6 binary not analysed",
+      "files_affected": [
+        "pee/__pycache__/__init__.cpython-312.pyc",
+        "pee/__pycache__/config.cpython-312.pyc",
+        "pee/core/__pycache__/__init__.cpython-312.pyc",
+        "pee/core/__pycache__/analysis.cpython-312.pyc",
+        "pee/core/__pycache__/database.cpython-312.pyc",
+        "pee/core/__pycache__/models.cpython-312.pyc"
+      ],
+      "status": "in_progress",
+      "timestamp": 1793292623.4591546,
+      "timestamp_str": "2026-10-29 19:50:23",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 15",
+      "phase_num": 3,
+      "description": "Reforge stage 15: window 43, 1 commit(s), 1 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793292684.3419526,
+      "timestamp_str": "2026-10-29 19:51:24",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 15",
+      "phase_num": 3,
+      "description": "Reforge stage 15: run stopped at stage 15; resume it with `reforge resume`",
+      "files_affected": [],
+      "status": "suspended",
+      "timestamp": 1793292702.7038178,
+      "timestamp_str": "2026-10-29 19:51:42",
+      "agent": "opencode"
     }
   ]
 }
