@@ -31,5 +31,5 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 - **Date**: 2026-10-29
 - **Status**: Accepted
 - **Context**: the workspace and settings release added `interventions.projected_end_date` and `metrics/events.intervention_id`; `create_all` does not alter an existing `main.db`, so upgrades would fail or hide legacy rows.
-- **Decision**: `main.core.database.ensure_schema()` runs `create_all` and adds missing SQLite columns/indexes idempotently at startup; legacy rows keep `NULL` `intervention_id` and are not assigned to an intervention automatically.
-- **Consequences**: existing databases open without manual deletion; legacy metric/event rows remain unassigned until a backfill or assignment UI exists; 15/15 tests pass.
+- **Decision**: `main.core.database.ensure_schema()` runs `create_all`, adds missing SQLite columns/indexes idempotently, and backfills rows with a `NULL` `intervention_id` into a visible `Legacy (unassigned)` intervention. CSV import/export also preserves `intervention_id` and `projected_end_date`.
+- **Consequences**: existing databases open without manual deletion and legacy rows stay reachable; the placeholder intervention can be renamed or merged later; 16/16 tests pass.

@@ -54,10 +54,16 @@ class DataManager:
                     # Convert to list of dicts for faster iteration
                     records = df.to_dict('records')
                     for row in records:
+                        intervention_id = row.get('intervention_id')
+                        if pd.isna(intervention_id):
+                            intervention_id = None
+                        elif intervention_id is not None:
+                            intervention_id = int(intervention_id)
                         entries.append(MetricEntry(
                             date=row['date'],
                             metric_name=row['metric_name'],
-                            value=row['value']
+                            value=row['value'],
+                            intervention_id=intervention_id
                         ))
                     session.bulk_save_objects(entries)
                     if self.db: session.commit() # Commit if using external session too, though context manager handles new ones.
@@ -74,20 +80,17 @@ class DataManager:
                         return {"success": False, "message": f"CSV must contain columns: {required_cols}"}
 
                     df['start_date'] = pd.to_datetime(df['start_date']).dt.date
-                    if 'end_date' in df.columns:
-                        df['end_date'] = pd.to_datetime(df['end_date']).dt.date
-                    else:
-                        df['end_date'] = None # Explicitly None for object creation
 
-                    # Ensure optional columns exist
-                    for col in ['dosage', 'notes', 'end_date']:
+                    # Ensure optional columns exist and convert NaT to None for SQL.
+                    for col in ['projected_end_date', 'end_date']:
+                        if col in df.columns:
+                            df[col] = pd.to_datetime(df[col]).dt.date
+                            df[col] = df[col].apply(lambda x: None if pd.isna(x) else x)
+                        else:
+                            df[col] = None
+                    for col in ['dosage', 'notes']:
                         if col not in df.columns:
                             df[col] = None
-
-                    # Handle NaT for end_date properly (NaT is not None, it's a type)
-                    # pd.to_datetime errors='coerce' produces NaT.
-                    # We need to convert NaT to None for SQL.
-                    df['end_date'] = df['end_date'].apply(lambda x: None if pd.isna(x) else x)
 
                     records = df.to_dict('records')
                     entries = []
@@ -95,7 +98,8 @@ class DataManager:
                         entries.append(Intervention(
                             name=row['name'],
                             start_date=row['start_date'],
-                            end_date=row['end_date'],
+                            projected_end_date=row.get('projected_end_date'),
+                            end_date=row.get('end_date'),
                             dosage=row.get('dosage'),
                             notes=row.get('notes')
                         ))
@@ -125,11 +129,18 @@ class DataManager:
                         elif severity is not None:
                              severity = int(severity)
 
+                        intervention_id = row.get('intervention_id')
+                        if pd.isna(intervention_id):
+                            intervention_id = None
+                        elif intervention_id is not None:
+                            intervention_id = int(intervention_id)
+
                         entries.append(EventEntry(
                             timestamp=row['timestamp'],
                             event_name=row['event_name'],
                             severity=severity,
-                            notes=row.get('notes')
+                            notes=row.get('notes'),
+                            intervention_id=intervention_id
                         ))
                     session.bulk_save_objects(entries)
                     session.commit()

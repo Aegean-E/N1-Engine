@@ -8,9 +8,9 @@
 ## 📊 Codebase Metrics
 - **Total Python Modules**: `26`
 - **Total Classes**: `22`
-- **Total Top-Level Functions**: `21`
+- **Total Top-Level Functions**: `23`
 - **Total Class Methods**: `71`
-- **Total Source Lines**: `2937`
+- **Total Source Lines**: `3048`
 
 ---
 
@@ -50,7 +50,7 @@
 ---
 
 ### [`main/core/data_manager.py`](main/core/data_manager.py)
-**Size**: `188` lines (`8672` bytes)
+**Size**: `199` lines (`9289` bytes)
 
 **Classes:**
 - `class DataManager` - *Manages data import and export.*
@@ -62,9 +62,10 @@
 ---
 
 ### [`main/core/database.py`](main/core/database.py)
-**Size**: `50` lines (`1835` bytes)
+**Size**: `96` lines (`3446` bytes)
 
 **Functions:**
+- `def _backfill_legacy_rows(connection)` - *Attach rows logged before interventions were linked to a visible placeholder.*
 - `def ensure_schema(target_engine)` - *Create missing tables and add columns introduced after the first release.*
 - `def get_db()`
 
@@ -291,11 +292,12 @@
 ---
 
 ### [`tests/test_schema_migration.py`](tests/test_schema_migration.py)
-**Size**: `63` lines (`2212` bytes)
+**Size**: `117` lines (`4505` bytes)
 
 **Functions:**
 - `def _old_database(path)`
 - `def test_ensure_schema_upgrades_an_old_sqlite_database(tmp_path)`
+- `def test_csv_import_preserves_intervention_links(tmp_path)`
 - `def test_save_settings_reports_failure(tmp_path)`
 
 ---

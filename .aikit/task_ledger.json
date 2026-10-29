@@ -5,7 +5,7 @@
     "last_phase": "phase 4",
     "active_phase": 4,
     "status": "in_progress",
-    "updated_at": 1793292163.1897314,
+    "updated_at": 1793293074.0344124,
     "owner": "opencode:reforge",
     "started_by": "opencode:reforge",
     "continuations": []
@@ -58,17 +58,6 @@
       "status": "completed",
       "timestamp": 1792691252.536124,
       "timestamp_str": "2026-10-22 20:47:32"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 6",
-      "phase_num": 3,
-      "description": "Reforge stage 6: window 18, 3 commit(s), 6 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793291540.777451,
-      "timestamp_str": "2026-10-29 19:32:20",
-      "agent": "opencode"
     },
     {
       "task_id": "reforge:run-1",
@@ -232,6 +221,17 @@
       "timestamp": 1793292866.8154414,
       "timestamp_str": "2026-10-29 19:54:26",
       "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "phase 4",
+      "phase_num": 4,
+      "description": "checklists: passed; backfilled legacy rows, preserved intervention links in CSV, refreshed AL-1.1 text, 16/16 pytest",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793293074.0344124,
+      "timestamp_str": "2026-10-29 19:57:54",
+      "agent": "opencode:reforge"
     }
   ]
 }

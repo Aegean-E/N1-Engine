@@ -1,8 +1,12 @@
 import sqlite3
+from datetime import date
 
 from sqlalchemy import create_engine, inspect
+from sqlalchemy.orm import sessionmaker
 
-from main.core.database import ensure_schema
+from main.core.data_manager import DataManager
+from main.core.database import Base, ensure_schema
+from main.core.models import EventEntry, Intervention, MetricEntry
 from main.core.settings_manager import SettingsManager
 
 
@@ -33,6 +37,7 @@ def _old_database(path):
         );
         INSERT INTO interventions (id, name, start_date) VALUES (1, 'Legacy', '2026-01-01');
         INSERT INTO metrics (id, date, metric_name, value) VALUES (1, '2026-01-02', 'Sleep', 8.0);
+        INSERT INTO events (id, timestamp, event_name, severity) VALUES (1, '2026-01-02 10:00:00', 'Stress', 2);
         """
     )
     connection.commit()
@@ -51,8 +56,57 @@ def test_ensure_schema_upgrades_an_old_sqlite_database(tmp_path):
     assert "intervention_id" in {column["name"] for column in inspector.get_columns("metrics")}
     assert "intervention_id" in {column["name"] for column in inspector.get_columns("events")}
     with engine.connect() as connection:
-        assert connection.exec_driver_sql("SELECT COUNT(*) FROM interventions").scalar() == 1
+        assert connection.exec_driver_sql("SELECT COUNT(*) FROM interventions").scalar() == 2
         assert connection.exec_driver_sql("SELECT COUNT(*) FROM metrics").scalar() == 1
+        assert connection.exec_driver_sql(
+            "SELECT intervention_id FROM metrics WHERE id = 1"
+        ).scalar() is not None
+        assert connection.exec_driver_sql(
+            "SELECT intervention_id FROM events WHERE id = 1"
+        ).scalar() is not None
+        assert connection.exec_driver_sql(
+            "SELECT name FROM interventions WHERE id = 2"
+        ).scalar() == "Legacy (unassigned)"
+
+
+def test_csv_import_preserves_intervention_links(tmp_path):
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(engine)
+    session = sessionmaker(bind=engine)()
+    session.add(Intervention(name="Original", start_date=date(2026, 1, 1)))
+    session.commit()
+
+    metrics_csv = tmp_path / "metrics.csv"
+    metrics_csv.write_text(
+        "date,metric_name,value,intervention_id\n2026-01-02,Sleep,8.0,1\n",
+        encoding="utf-8",
+    )
+    events_csv = tmp_path / "events.csv"
+    events_csv.write_text(
+        "timestamp,event_name,severity,notes,intervention_id\n"
+        "2026-01-02 10:00:00,Stress,2,,1\n",
+        encoding="utf-8",
+    )
+    interventions_csv = tmp_path / "interventions.csv"
+    interventions_csv.write_text(
+        "name,start_date,projected_end_date,end_date,dosage,notes\n"
+        "Imported,2026-01-03,2026-02-01,2026-01-20,100mg,test\n",
+        encoding="utf-8",
+    )
+
+    manager = DataManager(session)
+    assert manager.import_from_csv(str(metrics_csv), "metrics")["success"]
+    assert manager.import_from_csv(str(events_csv), "events")["success"]
+    assert manager.import_from_csv(str(interventions_csv), "interventions")["success"]
+
+    metric = session.query(MetricEntry).one()
+    event = session.query(EventEntry).one()
+    imported = session.query(Intervention).filter_by(name="Imported").one()
+    assert metric.intervention_id == 1
+    assert event.intervention_id == 1
+    assert imported.projected_end_date == date(2026, 2, 1)
+    assert imported.end_date == date(2026, 1, 20)
+    session.close()
 
 
 def test_save_settings_reports_failure(tmp_path):
