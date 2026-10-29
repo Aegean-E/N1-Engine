@@ -3,6 +3,8 @@
   "surfaces": {
     "app": {
       "paths": [
+        "main/gui/**",
+        "run_gui.py",
         "requirements.txt"
       ]
     }
