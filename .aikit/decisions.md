@@ -26,3 +26,10 @@ contract, a dependency, a data format or the architecture; IDs are consecutive a
 ## License notice cleanup (2026-10-26)
 
 - The license-history notes and the old-license boundary tag were removed: the project is offered only under the Aegean License 1.1 (AL-1.1), with commercial use under ACL-1.0.
+
+### ADR-003: Upgrade older SQLite databases in place
+- **Date**: 2026-10-29
+- **Status**: Accepted
+- **Context**: the workspace and settings release added `interventions.projected_end_date` and `metrics/events.intervention_id`; `create_all` does not alter an existing `main.db`, so upgrades would fail or hide legacy rows.
+- **Decision**: `main.core.database.ensure_schema()` runs `create_all` and adds missing SQLite columns/indexes idempotently at startup; legacy rows keep `NULL` `intervention_id` and are not assigned to an intervention automatically.
+- **Consequences**: existing databases open without manual deletion; legacy metric/event rows remain unassigned until a backfill or assignment UI exists; 15/15 tests pass.

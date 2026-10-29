@@ -321,6 +321,11 @@ class MetricDefinitionWidget(QWidget):
                     show_error(self, "Validation Error", "Metric name is required.")
                     return
                 
+                old_name = metric_def.name
+                if data["name"] != old_name:
+                    db.query(MetricEntry).filter(
+                        MetricEntry.metric_name == old_name
+                    ).update({MetricEntry.metric_name: data["name"]}, synchronize_session=False)
                 metric_def.name = data["name"]
                 metric_def.description = data["description"]
                 metric_def.unit = data["unit"]

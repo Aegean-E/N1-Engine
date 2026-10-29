@@ -41,13 +41,15 @@ class SettingsManager:
             self.settings = self.defaults.copy()
         return self.settings
 
-    def save_settings(self):
+    def save_settings(self) -> bool:
         try:
             with open(self.settings_file, 'w', encoding='utf-8') as f:
                 json.dump(self.settings, f, indent=4)
             logger.info(f"Settings saved to '{self.settings_file}'.")
+            return True
         except IOError as e:
             logger.error(f"Could not save settings to '{self.settings_file}': {e}.")
+            return False
 
     def get(self, key, default=None):
         return self.settings.get(key, default)

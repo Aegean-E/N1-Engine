@@ -6,11 +6,11 @@
 ---
 
 ## 📊 Codebase Metrics
-- **Total Python Modules**: `25`
+- **Total Python Modules**: `26`
 - **Total Classes**: `22`
-- **Total Top-Level Functions**: `17`
+- **Total Top-Level Functions**: `21`
 - **Total Class Methods**: `71`
-- **Total Source Lines**: `2835`
+- **Total Source Lines**: `2937`
 
 ---
 
@@ -62,9 +62,10 @@
 ---
 
 ### [`main/core/database.py`](main/core/database.py)
-**Size**: `18` lines (`491` bytes)
+**Size**: `50` lines (`1835` bytes)
 
 **Functions:**
+- `def ensure_schema(target_engine)` - *Create missing tables and add columns introduced after the first release.*
 - `def get_db()`
 
 ---
@@ -94,7 +95,7 @@
 ---
 
 ### [`main/core/settings_manager.py`](main/core/settings_manager.py)
-**Size**: `62` lines (`2254` bytes)
+**Size**: `64` lines (`2311` bytes)
 
 **Classes:**
 - `class SettingsManager`
@@ -180,7 +181,7 @@
 ---
 
 ### [`main/gui/main_window.py`](main/gui/main_window.py)
-**Size**: `111` lines (`4450` bytes)
+**Size**: `111` lines (`4454` bytes)
 
 **Classes:**
 - `class WorkspaceWidget` - *A widget that encapsulates the main experiment workflow.*
@@ -194,7 +195,7 @@
 ---
 
 ### [`main/gui/metrics.py`](main/gui/metrics.py)
-**Size**: `357` lines (`13772` bytes)
+**Size**: `362` lines (`14067` bytes)
 
 **Classes:**
 - `class LoggingWidget` - *Widget for logging metrics.*
@@ -216,7 +217,7 @@
 ---
 
 ### [`main/gui/settings.py`](main/gui/settings.py)
-**Size**: `63` lines (`2720` bytes)
+**Size**: `65` lines (`2888` bytes)
 
 **Classes:**
 - `class SettingsWidget` - *Widget for managing application settings.*
@@ -227,7 +228,7 @@
 ---
 
 ### [`main/gui/summarizer.py`](main/gui/summarizer.py)
-**Size**: `186` lines (`8307` bytes)
+**Size**: `184` lines (`8186` bytes)
 
 **Classes:**
 - `class SummarizerWidget` - *Widget for generating a daily/weekly summary.*
@@ -286,5 +287,15 @@
 - `def test_zero_variance()`
 - `def test_multiple_comparison_warning()`
 - `def test_window_duration_exactness()`
+
+---
+
+### [`tests/test_schema_migration.py`](tests/test_schema_migration.py)
+**Size**: `63` lines (`2212` bytes)
+
+**Functions:**
+- `def _old_database(path)`
+- `def test_ensure_schema_upgrades_an_old_sqlite_database(tmp_path)`
+- `def test_save_settings_reports_failure(tmp_path)`
 
 ---

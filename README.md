@@ -8,13 +8,6 @@
 
 *A local-first, privacy-focused, and scientifically rigorous platform for personal N=1 experimentation.*
 
-
-
-<p align="center">
-</p>
-
-
-
 The **N1-Engine** is a local-first Python platform designed for rigorous N=1 self-experimentation analysis. It empowers individuals to treat their life as a laboratory, applying scientific statistical methods to personal data to determine what truly works for them.
 
 **What it is:**
@@ -222,6 +215,7 @@ N1-Engine/
 ├── run_gui.py               <- application entry point
 ├── requirements.txt         <- declared dependencies
 ├── README.md
+├── assets/
 ├── COMMERCIAL.md
 ├── LICENSE
 ├── LICENSES/                 <- REUSE license texts

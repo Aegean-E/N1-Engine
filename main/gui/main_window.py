@@ -12,7 +12,7 @@ from main.gui.analysis import AnalysisWidget
 from main.gui.data_management import DataManagementWidget
 from main.gui.summarizer import SummarizerWidget
 from main.gui.settings import SettingsWidget
-from main.core.database import Base, engine
+from main.core.database import ensure_schema
 
 logger = logging.getLogger(__name__)
 
@@ -75,11 +75,11 @@ class MainWindow(QMainWindow):
     """The main application window."""
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Personal Experiment Engine")
+        self.setWindowTitle("N1-Engine")
         self.resize(1000, 800)
 
-        # Ensure DB tables exist
-        Base.metadata.create_all(bind=engine)
+        # Ensure DB tables exist and upgrade older SQLite schemas in place
+        ensure_schema()
 
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)

@@ -29,3 +29,6 @@ settings.json
 .aikit/*.bak
 .aikit/*.tmp_*
 .aikit/*.corrupt_*
+# AIKit transient state
+*.py[cod]
+node_modules/

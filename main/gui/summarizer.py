@@ -1,6 +1,6 @@
 import logging
 from datetime import date, datetime, timedelta
-from typing import Optional
+from typing import Dict, Optional
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QPushButton, QFormLayout,
     QDateEdit, QTextEdit, QGroupBox, QHBoxLayout, QComboBox
@@ -118,17 +118,15 @@ class SummarizerWidget(QWidget):
                     (Intervention.end_date == None) | (Intervention.end_date >= start_date)
                 ).all()
 
-                # Get global metric entries in range
+                # Get metric entries in range
                 metrics = db.query(MetricEntry).filter(
-                    MetricEntry.intervention_id == None,
                     MetricEntry.date.between(start_date, end_date)
                 ).order_by(MetricEntry.date, MetricEntry.metric_name).all()
 
-                # Get global events in range
+                # Get events in range
                 start_datetime = datetime.combine(start_date, datetime.min.time())
                 end_datetime = datetime.combine(end_date, datetime.max.time())
                 events = db.query(EventEntry).filter(
-                    EventEntry.intervention_id == None,
                     EventEntry.timestamp.between(start_datetime, end_datetime)
                 ).order_by(EventEntry.timestamp).all()
 

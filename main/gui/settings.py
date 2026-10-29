@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
     QSpinBox, QGroupBox
 )
 from main.core.settings_manager import settings_manager
-from main.gui.dialogs import show_info
+from main.gui.dialogs import show_error, show_info
 
 logger = logging.getLogger(__name__)
 
@@ -59,5 +59,7 @@ class SettingsWidget(QWidget):
         settings_manager.set("min_intervention_days", self.min_intervention_days.value())
         settings_manager.set("min_data_points", self.min_data_points.value())
         settings_manager.set("max_safe_metrics", self.max_safe_metrics.value())
-        settings_manager.save_settings()
-        show_info(self, "Settings have been saved.")
+        if settings_manager.save_settings():
+            show_info(self, "Settings have been saved.")
+        else:
+            show_error(self, "Save Failed", "Settings could not be written to disk. Check the application log and file permissions.")
