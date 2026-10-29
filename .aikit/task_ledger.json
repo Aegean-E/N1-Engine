@@ -61,39 +61,6 @@
     },
     {
       "task_id": "reforge:run-1",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "checklists: passed; reforge stage 9 fixes, ADR-003 SQLite migration, 15/15 pytest",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292163.1897314,
-      "timestamp_str": "2026-10-29 19:42:43",
-      "agent": "opencode:reforge"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 10",
-      "phase_num": 3,
-      "description": "Reforge stage 10: window 30, 3 commit(s), 14 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292401.2062535,
-      "timestamp_str": "2026-10-29 19:46:41",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 11",
-      "phase_num": 3,
-      "description": "Reforge stage 11: window 33, 3 commit(s), 24 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292447.756253,
-      "timestamp_str": "2026-10-29 19:47:27",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
       "phase": "reforge stage 12",
       "phase_num": 3,
       "description": "Reforge stage 12: window 36, 3 commit(s), 12 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
@@ -229,6 +196,39 @@
       "status": "suspended",
       "timestamp": 1793293161.6404278,
       "timestamp_str": "2026-10-29 19:59:21",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 17",
+      "phase_num": 3,
+      "description": "Reforge stage 17: run resumed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793293238.9396753,
+      "timestamp_str": "2026-10-29 20:00:38",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 18",
+      "phase_num": 3,
+      "description": "Reforge stage 18: window 47, 1 commit(s), 0 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793293271.0933607,
+      "timestamp_str": "2026-10-29 20:01:11",
+      "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 18",
+      "phase_num": 3,
+      "description": "Reforge stage 18: run stopped at stage 18; resume it with `reforge resume`",
+      "files_affected": [],
+      "status": "suspended",
+      "timestamp": 1793293292.2103343,
+      "timestamp_str": "2026-10-29 20:01:32",
       "agent": "opencode"
     }
   ]
