@@ -3,12 +3,19 @@
   "active_task": {
     "task_id": "reforge:run-1",
     "last_phase": "phase 4",
-    "active_phase": 4,
-    "status": "in_progress",
+    "active_phase": 5,
+    "status": "completed",
     "updated_at": 1793293074.0344124,
     "owner": "opencode:reforge",
     "started_by": "opencode:reforge",
-    "continuations": []
+    "continuations": [
+      {
+        "agent": "copilot:n1-engine",
+        "from": "opencode:reforge",
+        "at": 1793453421.2522407
+      }
+    ],
+    "completed_at": 1793453421.2522418
   },
   "checkpoints": [
     {
@@ -58,17 +65,6 @@
       "status": "completed",
       "timestamp": 1792691252.536124,
       "timestamp_str": "2026-10-22 20:47:32"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 12",
-      "phase_num": 3,
-      "description": "Reforge stage 12: window 36, 3 commit(s), 12 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292528.5520408,
-      "timestamp_str": "2026-10-29 19:48:48",
-      "agent": "opencode"
     },
     {
       "task_id": "reforge:run-1",
@@ -230,6 +226,17 @@
       "timestamp": 1793293292.2103343,
       "timestamp_str": "2026-10-29 20:01:32",
       "agent": "opencode"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "completed",
+      "phase_num": 5,
+      "description": "Task 'reforge:run-1' completed successfully.",
+      "status": "completed",
+      "timestamp": 1793453421.2522428,
+      "timestamp_str": "2026-10-31 16:30:21",
+      "agent": "copilot:n1-engine",
+      "continued_from": "opencode:reforge"
     }
   ]
 }
