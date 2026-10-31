@@ -20,35 +20,6 @@
   "checkpoints": [
     {
       "task_id": "integrate-aikit",
-      "phase": "phase 4",
-      "phase_num": 4,
-      "description": "[5/5] Verification: aikit check N1-Engine passes 4/4 gates (test, hygiene, guidelines, secrets); 13/13 tests pass; ADR-001/002 recorded; checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792615127.152861,
-      "timestamp_str": "2026-10-21 23:38:47"
-    },
-    {
-      "task_id": "integrate-aikit",
-      "phase": "completed",
-      "phase_num": 5,
-      "description": "Task 'integrate-aikit' completed successfully.",
-      "status": "completed",
-      "timestamp": 1792615136.6721747,
-      "timestamp_str": "2026-10-21 23:38:56"
-    },
-    {
-      "task_id": "integrate-aikit",
-      "phase": "phase 5",
-      "phase_num": 5,
-      "description": "[delivery] Publish N1-Engine's integrated state to github.com/Aegean-E/N1-Engine: working tree grafted onto origin/main, explicit staging, checklists: passed",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1792621240.7401903,
-      "timestamp_str": "2026-10-22 01:20:40"
-    },
-    {
-      "task_id": "integrate-aikit",
       "phase": "phase 5",
       "phase_num": 5,
       "description": "[delivery] Strict check caught README tree omissions (main/__init__.py, main/config.py) now that the project is a git repo; fixed, 4/4 gates pass, checklists: passed",
@@ -65,46 +36,6 @@
       "status": "completed",
       "timestamp": 1792691252.536124,
       "timestamp_str": "2026-10-22 20:47:32"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 13",
-      "phase_num": 3,
-      "description": "Reforge stage 13: window 39, 3 commit(s), 12 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292574.7871413,
-      "timestamp_str": "2026-10-29 19:49:34",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 14",
-      "phase_num": 3,
-      "description": "Reforge stage 14: window 42, 3 commit(s), 11 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired, 6 binary not analysed",
-      "files_affected": [
-        "pee/__pycache__/__init__.cpython-312.pyc",
-        "pee/__pycache__/config.cpython-312.pyc",
-        "pee/core/__pycache__/__init__.cpython-312.pyc",
-        "pee/core/__pycache__/analysis.cpython-312.pyc",
-        "pee/core/__pycache__/database.cpython-312.pyc",
-        "pee/core/__pycache__/models.cpython-312.pyc"
-      ],
-      "status": "in_progress",
-      "timestamp": 1793292623.4591546,
-      "timestamp_str": "2026-10-29 19:50:23",
-      "agent": "opencode"
-    },
-    {
-      "task_id": "reforge:run-1",
-      "phase": "reforge stage 15",
-      "phase_num": 3,
-      "description": "Reforge stage 15: window 43, 1 commit(s), 1 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
-      "files_affected": [],
-      "status": "in_progress",
-      "timestamp": 1793292684.3419526,
-      "timestamp_str": "2026-10-29 19:51:24",
-      "agent": "opencode"
     },
     {
       "task_id": "reforge:run-1",
@@ -237,6 +168,72 @@
       "timestamp_str": "2026-10-31 16:30:21",
       "agent": "copilot:n1-engine",
       "continued_from": "opencode:reforge"
+    },
+    {
+      "task_id": "reforge:run-2",
+      "phase": "reforge run",
+      "phase_num": 3,
+      "description": "run started (start=3, step=3, stop=None)",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793453477.194046,
+      "timestamp_str": "2026-10-31 16:31:17",
+      "agent": "github"
+    },
+    {
+      "task_id": "reforge:run-2",
+      "phase": "reforge stage 1",
+      "phase_num": 3,
+      "description": "Reforge stage 1: window 3, 3 commit(s), 0 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793453480.0809278,
+      "timestamp_str": "2026-10-31 16:31:20",
+      "agent": "github"
+    },
+    {
+      "task_id": "reforge:run-2",
+      "phase": "reforge stage 1",
+      "phase_num": 3,
+      "description": "Reforge stage 1: stage 1 host review reviewed; run completed; coverage 0/0",
+      "files_affected": [],
+      "status": "completed",
+      "timestamp": 1793453494.3776486,
+      "timestamp_str": "2026-10-31 16:31:34",
+      "agent": "github"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 18",
+      "phase_num": 3,
+      "description": "Reforge stage 18: run resumed",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793453600.0530238,
+      "timestamp_str": "2026-10-31 16:33:20",
+      "agent": "github"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 19",
+      "phase_num": 3,
+      "description": "Reforge stage 19: window 49, 2 commit(s), 0 file(s) reviewed (unreviewed), 0 finding(s), 0 repaired",
+      "files_affected": [],
+      "status": "in_progress",
+      "timestamp": 1793453614.594913,
+      "timestamp_str": "2026-10-31 16:33:34",
+      "agent": "github"
+    },
+    {
+      "task_id": "reforge:run-1",
+      "phase": "reforge stage 19",
+      "phase_num": 3,
+      "description": "Reforge stage 19: stage 19 host review reviewed; run completed; coverage 0/0",
+      "files_affected": [],
+      "status": "completed",
+      "timestamp": 1793453622.7950861,
+      "timestamp_str": "2026-10-31 16:33:42",
+      "agent": "github"
     }
   ]
 }
